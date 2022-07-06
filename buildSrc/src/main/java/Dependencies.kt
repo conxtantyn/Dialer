@@ -11,6 +11,8 @@ object Dependencies {
         const val AndroidxConstraintLayout = "2.1.4"
         const val AndroidGoogleMaterial = "1.6.1"
 
+        const val Navigation = "2.4.1"
+
         const val Dagger = "2.42"
         const val DaggerAssisted = "0.5.2"
 
@@ -32,6 +34,11 @@ object Dependencies {
             ":constraintlayout:${Version.AndroidxConstraintLayout}"
     const val AndroidGoogleMaterial = "com.google.android.material" +
             ":material:${Version.AndroidGoogleMaterial}"
+
+    // navigation
+    const val NavigationUI = "androidx.navigation:navigation-ui-ktx:${Version.Navigation}"
+    const val NavigationFragment = "androidx.navigation:navigation-fragment-ktx" +
+            ":${Version.Navigation}"
 
     // dagger
     const val Dagger = "com.google.dagger:dagger:${Version.Dagger}"

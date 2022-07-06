@@ -3,19 +3,19 @@ package com.constantine.core.config.module
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import com.constantine.core.DynamicFeature
 import com.constantine.core.config.CoreComponent
-import com.constantine.core.content.Feature
 import dagger.Module
 import dagger.Provides
 import timber.log.Timber
 
 @Module
 object FeatureModule {
-    private val features: MutableMap<Class<*>, Feature> = mutableMapOf()
+    private val features: MutableMap<Class<*>, DynamicFeature> = mutableMapOf()
 
     @Provides
     @JvmStatic
-    fun provideFeatures(context: Context, component: CoreComponent): List<Feature> {
+    fun provideFeatures(context: Context, component: CoreComponent): List<DynamicFeature> {
         val domain = context.packageName
         val bundle = context.packageManager.getApplicationInfo(
             domain, PackageManager.GET_META_DATA
@@ -37,7 +37,7 @@ object FeatureModule {
             bundle.getString(key)?.let { provider ->
                 val klazz = Class.forName(provider)
                 if (features[klazz] == null) {
-                    (klazz.getDeclaredConstructor().newInstance() as? Feature.Provider?)
+                    (klazz.getDeclaredConstructor().newInstance() as? DynamicFeature.Provider?)
                         ?.get(component)?.also {
                             features[klazz] = it
                         }

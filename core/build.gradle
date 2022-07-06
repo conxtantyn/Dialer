@@ -1,9 +1,12 @@
+apply {
+    from('../gradle/dependency/shared.gradle')
+    from('../gradle/dependency/test.gradle')
+}
+
 dependencies {
     api(project(Modules.Common))
 
     // Dagger
     api(Dependencies.Dagger)
     api(Dependencies.DaggerAndroid)
-    kapt(Dependencies.DaggerCompiler)
-    kapt(Dependencies.DaggerAndroidProcessor)
 }

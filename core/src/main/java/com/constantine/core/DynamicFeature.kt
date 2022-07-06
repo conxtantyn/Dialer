@@ -1,13 +1,13 @@
-package com.constantine.core.content
+package com.constantine.core
 
 import android.app.Application
 import android.content.Context
 
-interface Feature {
+interface DynamicFeature {
     fun onCreate()
 
     interface Provider {
-        fun get(component: Component): Feature
+        fun get(component: Component): DynamicFeature
     }
 
     interface Component {

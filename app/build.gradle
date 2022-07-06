@@ -10,6 +10,7 @@ android {
 
 dependencies {
     api(project(Modules.Core))
+    api(project(Modules.Data))
 
     // Google
     implementation(Dependencies.GooglePlayCore)

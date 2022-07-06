@@ -1,1 +1,8 @@
-dependencies {}
+apply {
+    from('../gradle/dependency/shared.gradle')
+    from('../gradle/dependency/test.gradle')
+}
+
+dependencies {
+    api(project(Modules.Domain))
+}

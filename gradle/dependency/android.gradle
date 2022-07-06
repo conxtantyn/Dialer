@@ -3,4 +3,7 @@ dependencies {
     implementation(Dependencies.AndroidxAppCompact)
     implementation(Dependencies.AndroidGoogleMaterial)
     implementation(Dependencies.AndroidxConstraintLayout)
+
+    implementation(Dependencies.NavigationUI)
+    implementation(Dependencies.NavigationFragment)
 }
