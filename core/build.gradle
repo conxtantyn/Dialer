@@ -6,6 +6,10 @@ apply {
 dependencies {
     api(project(Modules.Common))
 
+    // Google
+    implementation(Dependencies.GooglePlayCore)
+    implementation(Dependencies.GooglePlayCoreKtx)
+
     // Dagger
     api(Dependencies.Dagger)
     api(Dependencies.DaggerAndroid)

@@ -1,7 +1,8 @@
 package com.constantine.core
 
-import android.app.Application
 import android.content.Context
+import com.constantine.core.component.SplitApplication
+import com.constantine.core.content.SimpleAndroidInjector
 
 interface DynamicFeature {
     fun onCreate()
@@ -13,6 +14,8 @@ interface DynamicFeature {
     interface Component {
         fun context(): Context
 
-        fun application(): Application
+        fun application(): SplitApplication
+
+        fun injector(): SimpleAndroidInjector
     }
 }

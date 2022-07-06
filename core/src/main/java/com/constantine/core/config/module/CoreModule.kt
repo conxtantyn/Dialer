@@ -1,12 +1,12 @@
 package com.constantine.core.config.module
 
-import android.app.Application
 import android.content.Context
+import com.constantine.core.component.SplitApplication
 import dagger.Module
 import dagger.Provides
 
 @Module
 class CoreModule {
     @Provides
-    fun provideContext(application: Application): Context = application
+    fun provideContext(application: SplitApplication): Context = application
 }

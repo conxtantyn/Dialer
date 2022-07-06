@@ -1,6 +1,6 @@
 package com.constantine.dialer.ui.screen.home
 
-import androidx.fragment.app.Fragment
+import com.constantine.android.ui.component.BaseFragment
 import com.constantine.dialer.R
 
-class HomeFragment : Fragment(R.layout.fragment_home)
+class HomeFragment : BaseFragment(R.layout.fragment_home)

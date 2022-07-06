@@ -10,8 +10,9 @@ import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
 abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
+
     @Inject
-    internal lateinit var injector: DispatchingAndroidInjector<Any>
+    protected lateinit var injector: DispatchingAndroidInjector<Any>
 
     @Inject
     protected lateinit var factory: ViewModelProvider.Factory

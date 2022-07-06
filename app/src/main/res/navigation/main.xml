@@ -7,7 +7,7 @@
     <include-dynamic
         android:id="@+id/home"
         app:moduleName="dialer"
-        app:graphResName="dialer"
+        app:graphResName="home"
         app:graphPackage="com.constantine.android.dialer" />
 
     <fragment
