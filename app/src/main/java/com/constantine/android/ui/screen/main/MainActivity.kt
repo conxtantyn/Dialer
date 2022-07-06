@@ -21,7 +21,9 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        hostFragment = supportFragmentManager.findFragmentById(R.id.main) as NavHostFragment
+        hostFragment = supportFragmentManager.findFragmentById(
+            R.id.nav_host_fragment_container
+        ) as NavHostFragment
         hostFragment?.let {
             viewModel = ViewModelProvider(this, factory)
                 .get(MainViewModel::class.java).also {
