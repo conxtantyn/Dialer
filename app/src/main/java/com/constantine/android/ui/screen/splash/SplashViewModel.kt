@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.constantine.core.component.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import javax.inject.Inject
 internal class SplashViewModel @Inject constructor() : ViewModel(), Splash.ViewModel {
     private val mutableState = MutableLiveData<Splash.State>()
 
-    private val mutableEvent = MutableLiveData<Splash.Event>()
+    private val mutableEvent = SingleLiveEvent<Splash.Event>()
 
     override val state: LiveData<Splash.State> get() = mutableState
 
