@@ -10,11 +10,14 @@ object Dependencies {
         const val AndroidxAppCompact = "1.4.2"
         const val AndroidxConstraintLayout = "2.1.4"
         const val AndroidGoogleMaterial = "1.6.1"
+        const val AndroidxLegacySupport = "1.0.0"
 
         const val Navigation = "2.4.1"
 
         const val Dagger = "2.42"
         const val DaggerAssisted = "0.5.2"
+
+        const val Lottie = "4.2.0"
 
         const val Junit = "4.13.2"
         const val AndroidxTest = "1.1.3"
@@ -34,6 +37,8 @@ object Dependencies {
             ":constraintlayout:${Version.AndroidxConstraintLayout}"
     const val AndroidGoogleMaterial = "com.google.android.material" +
             ":material:${Version.AndroidGoogleMaterial}"
+    const val AndroidxLegacySupport = "androidx.legacy:legacy-support-v4" +
+            ":${Version.AndroidxLegacySupport}"
 
     // navigation
     const val NavigationUI = "androidx.navigation:navigation-ui-ktx:${Version.Navigation}"
@@ -50,6 +55,9 @@ object Dependencies {
             ":assisted-inject-annotations-dagger2:${Version.DaggerAssisted}"
     const val DaggerAssistedProcessor = "com.squareup.inject" +
             ":assisted-inject-processor-dagger2:${Version.DaggerAssisted}"
+
+    // lottie
+    const val Lottie = "com.airbnb.android:lottie:${Version.Lottie}"
 
     // test
     const val Junit = "junit:junit:${Version.Junit}"

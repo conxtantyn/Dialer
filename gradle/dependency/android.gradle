@@ -2,6 +2,7 @@ dependencies {
     implementation(Dependencies.AndroidxCore)
     implementation(Dependencies.AndroidxAppCompact)
     implementation(Dependencies.AndroidGoogleMaterial)
+    implementation(Dependencies.AndroidxLegacySupport)
     implementation(Dependencies.AndroidxConstraintLayout)
 
     implementation(Dependencies.NavigationUI)

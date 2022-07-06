@@ -15,4 +15,7 @@ dependencies {
     // Google
     implementation(Dependencies.GooglePlayCore)
     implementation(Dependencies.GooglePlayCoreKtx)
+
+    // Lottie
+    implementation(Dependencies.Lottie)
 }
