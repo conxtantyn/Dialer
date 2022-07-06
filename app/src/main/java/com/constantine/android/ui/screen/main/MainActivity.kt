@@ -25,8 +25,8 @@ class MainActivity : BaseActivity() {
         hostFragment?.let {
             viewModel = ViewModelProvider(this, factory)
                 .get(MainViewModel::class.java).also {
-                it.event.observe(this, Observer(::handleViewEvent))
-            }
+                    it.event.observe(this, Observer(::handleViewEvent))
+                }
         }
     }
 
