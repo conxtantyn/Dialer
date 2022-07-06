@@ -1,1 +1,0 @@
-/Users/constantine/Mobile/Dialer/buildSrc/build/classes/kotlin/main/Build.class:/Users/constantine/Mobile/Dialer/buildSrc/build/classes/kotlin/main/Dependencies$Version.class:/Users/constantine/Mobile/Dialer/buildSrc/build/classes/kotlin/main/Dependencies.class:/Users/constantine/Mobile/Dialer/buildSrc/build/classes/kotlin/main/Modules.class
