@@ -1,0 +1,39 @@
+buildscript {
+    ext {
+        jvmVersion = '11'
+        kotlinJvm = '1.6.10'
+        kotlinPlugin = '1.7.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinPlugin}"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinJvm"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "$jvmVersion"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "$jvmVersion"
+    }
+}
+
+apply plugin: "kotlin"

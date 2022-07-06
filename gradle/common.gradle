@@ -1,0 +1,96 @@
+def delimiter = ':'
+
+ext.modules = [
+        ':common',
+        ':domain',
+        ':server',
+        ':core',
+        ':test_shared',
+        'com.constantine.android:app',
+        'com.android.dynamic-feature:feature-dialer'
+]
+
+modules.each {
+    def paths = it.split(delimiter)
+    def moduleId = (paths.size() > 1) ? paths[0] : null
+    def moduleName = (paths.size() > 1) ? paths[1].replaceAll('-', delimiter)
+            : paths[0].replaceAll('-', delimiter)
+
+    def isDynamicFeature = moduleId == 'com.android.dynamic-feature'
+    def isApplication = moduleId != null && !isDynamicFeature && !"$moduleId".trim().empty
+
+    // modules without application-id will be built as library
+    def modulePlugin = isApplication ? 'com.android.application' : isDynamicFeature
+            ? moduleId : 'com.android.library'
+
+    project(":$moduleName") {
+        apply plugin: modulePlugin
+        apply plugin: 'org.jetbrains.kotlin.android'
+        apply plugin: "kotlin-kapt"
+        apply plugin: 'org.jlleitschuh.gradle.ktlint'
+        apply plugin: 'io.gitlab.arturbosch.detekt'
+
+        android {
+            compileSdkVersion Build.compileSdk
+            buildToolsVersion Build.buildTools
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+            defaultConfig {
+                if (isApplication) {
+                    applicationId moduleId
+                }
+                minSdkVersion Build.minSdk
+                targetSdkVersion Build.targetSdk
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            }
+            buildTypes {
+                release {
+                    minifyEnabled isApplication
+                    if (!isDynamicFeature) {
+                        proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                                'proguard-rules.pro'
+                    } else {
+                        consumerProguardFiles 'proguard-rules.pro'
+                    }
+                }
+            }
+            buildFeatures {
+                viewBinding true
+            }
+            kotlinOptions {
+                jvmTarget = JavaVersion.VERSION_1_8
+            }
+            flavorDimensions 'default'
+            productFlavors {
+                staging {
+                    if (isApplication) {
+                        applicationId "${moduleId}.staging"
+                    }
+                    buildConfigField 'Boolean', 'IS_PRODUCTION_BUILD', 'false'
+                    dimension "default"
+                }
+                production {
+                    buildConfigField 'Boolean', 'IS_PRODUCTION_BUILD', 'true'
+                    dimension "default"
+                }
+            }
+        }
+        detekt {
+            debug = false
+            input = files("$projectDir/src/main/java")
+            config = files("$rootDir/detekt.yml")
+            reports {
+                html {
+                    enabled = true
+                }
+            }
+        }
+        dependencies {
+            implementation fileTree(include: ['*.jar'], dir: 'libs')
+        }
+        ktlintCheck.dependsOn ktlintFormat
+        preBuild.dependsOn ktlintCheck
+    }
+}

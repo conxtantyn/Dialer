@@ -1,0 +1,4 @@
+dependencies {
+    api(Dependencies.Gson)
+    api(Dependencies.Timber)
+}
