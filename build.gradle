@@ -8,6 +8,6 @@ plugins {
     id 'io.gitlab.arturbosch.detekt' version "$detektVersion" apply false
 }
 
-apply { from("gradle/common.gradle") }
+apply { from('gradle/common.gradle') }
 
 task clean(type: Delete) { delete rootProject.buildDir }

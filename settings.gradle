@@ -17,7 +17,7 @@ rootProject.name = "Constantine"
 include ':app'
 include ':common'
 include ':domain'
-include ':server'
+include ':data'
 include ':feature:dialer'
 include ':core'
 include ':test_shared'

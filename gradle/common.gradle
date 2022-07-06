@@ -3,7 +3,7 @@ def delimiter = ':'
 ext.modules = [
         ':common',
         ':domain',
-        ':server',
+        ':data',
         ':core',
         ':test_shared',
         'com.constantine.android:app',

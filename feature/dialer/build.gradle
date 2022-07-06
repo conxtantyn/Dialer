@@ -1,3 +1,9 @@
+apply {
+    from('../../gradle/dependency/android.gradle')
+    from('../../gradle/dependency/shared.gradle')
+    from('../../gradle/dependency/test.gradle')
+}
+
 dependencies {
     implementation(project(Modules.App))
 }

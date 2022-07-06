@@ -22,10 +22,12 @@ object FeatureModule {
         ).metaData
         // provide main app feature first
         loadFeature(domain, bundle, component)
-        bundle.keySet().forEach {
+        bundle.keySet().filter { it != domain }.forEach {
             try {
-                if (it != domain) loadFeature(it, bundle, component)
-            } catch (e: ClassNotFoundException) { Timber.e(e) }
+                loadFeature(it, bundle, component)
+            } catch (e: ClassNotFoundException) {
+                Timber.e(e)
+            }
         }
         return features.values.toList()
     }

@@ -1,0 +1,12 @@
+dependencies {
+    // Test implementations
+    testImplementation(project(Modules.Test))
+
+    testImplementation(Dependencies.Junit)
+
+    // Android test implementations
+    androidTestImplementation(project(Modules.Test))
+
+    androidTestImplementation(Dependencies.AndroidxTest)
+    androidTestImplementation(Dependencies.AndroidxEspresso)
+}

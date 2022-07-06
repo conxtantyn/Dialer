@@ -1,0 +1,6 @@
+dependencies {
+    implementation(Dependencies.AndroidxCore)
+    implementation(Dependencies.AndroidxAppCompact)
+    implementation(Dependencies.AndroidGoogleMaterial)
+    implementation(Dependencies.AndroidxConstraintLayout)
+}

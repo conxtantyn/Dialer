@@ -9,4 +9,9 @@
         dist:title="@string/title_dialer">
         <dist:fusing dist:include="true" />
     </dist:module>
+    <application>
+        <meta-data
+            android:name="com.constantine.android.dialer"
+            android:value="com.constantine.dialer.DialerFeature$Provider" />
+    </application>
 </manifest>
