@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.constantine.android.R
 import com.constantine.android.databinding.FragmentSplashBinding
 import com.constantine.android.ui.component.BaseFragment
-import com.constantine.android.ui.screen.main.MainViewModel
+import com.constantine.android.ui.coordinator.RootCoordinator
+import javax.inject.Inject
 
 class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
@@ -19,9 +21,10 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
 
     private var viewModel: SplashViewModel? = null
 
-    private var mainViewModel: MainViewModel? = null
-
     private var binding: FragmentSplashBinding? = null
+
+    @Inject
+    internal lateinit var coordinator: RootCoordinator
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,8 +42,6 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             it.state.observe(viewLifecycleOwner, Observer(::handleViewState))
             it.event.observe(viewLifecycleOwner, Observer(::handleViewEvent))
         }
-        mainViewModel = ViewModelProvider(requireActivity(), factory)
-            .get(MainViewModel::class.java)
     }
 
     private fun handleViewState(state: Splash.State) {
@@ -57,7 +58,7 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
             is Splash.Event.AnimationEnd -> if (isLoading) {
                 restartLogoAnimation()
             } else {
-                mainViewModel?.initialize()
+                coordinator.navigateToHome(findNavController())
             }
         }
     }
@@ -81,7 +82,6 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     override fun onDestroyView() {
         binding = null
         viewModel = null
-        mainViewModel = null
 
         super.onDestroyView()
     }

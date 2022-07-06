@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.20108695652173914" />
+        <entry key="feature/dialer/src/main/res/layout/fragment_home.xml" value="0.20108695652173914" />
       </map>
     </option>
   </component>

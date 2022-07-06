@@ -1,10 +1,11 @@
-package com.constantine.android.ui.screen.main
+package com.constantine.dialer.ui.screen.home
 
 import androidx.lifecycle.LiveData
 
-class Main {
+class Home {
     internal sealed class State
     internal sealed class Event
+
     internal interface ViewModel {
         val state: LiveData<State>
         val event: LiveData<Event>

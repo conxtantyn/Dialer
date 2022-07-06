@@ -13,8 +13,4 @@ internal class MainViewModel @Inject constructor() : ViewModel(), Main.ViewModel
     override val state: LiveData<Main.State> get() = mutableState
 
     override val event: LiveData<Main.Event> get() = mutableEvent
-
-    override fun initialize() {
-        mutableEvent.value = Main.Event.Initialized
-    }
 }
