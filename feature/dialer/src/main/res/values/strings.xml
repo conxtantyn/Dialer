@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="processing">Processing</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+
+    <string name="channelName">Dialer</string>
+    <string name="channelTitle">Dialer service</string>
+</resources>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.constantine.dialer">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <dist:module
         dist:instant="true"
@@ -9,9 +12,14 @@
         dist:title="@string/title_dialer">
         <dist:fusing dist:include="true" />
     </dist:module>
-    <application>
+    <application tools:ignore="MissingApplicationIcon">
         <meta-data
             android:name="com.constantine.android.dialer"
             android:value="com.constantine.dialer.DialerFeature$Provider" />
+
+        <service
+            android:name=".service.DialerService"
+            android:exported="false"
+            android:enabled="true"/>
     </application>
 </manifest>

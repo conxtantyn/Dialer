@@ -32,7 +32,7 @@ internal class SplashViewModel @Inject constructor() : ViewModel(), Splash.ViewM
     override fun initialize() {
         viewModelScope.launch {
             // fake network request
-            delay(5000)
+            delay(3000)
             mutableState.value = Splash.State.Initialized
         }
     }

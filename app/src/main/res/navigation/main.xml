@@ -16,6 +16,8 @@
         android:label="SplashFragment" >
         <action
             android:id="@+id/action_splashFragment_to_home"
-            app:destination="@id/home" />
+            app:destination="@id/home"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

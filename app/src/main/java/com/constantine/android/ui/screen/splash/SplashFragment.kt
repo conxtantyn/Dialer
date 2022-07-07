@@ -29,15 +29,15 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentSplashBinding.bind(view).also {
-            initViewModel(it)
-            initAnimation(it)
+        binding = FragmentSplashBinding.bind(view)
 
-            viewModel?.initialize()
-        }
+        initViewModel()
+        initAnimation()
+
+        viewModel?.initialize()
     }
 
-    private fun initViewModel(binding: FragmentSplashBinding) {
+    private fun initViewModel() {
         viewModel = ViewModelProvider(this, factory).get(SplashViewModel::class.java).also {
             it.state.observe(viewLifecycleOwner, Observer(::handleViewState))
             it.event.observe(viewLifecycleOwner, Observer(::handleViewEvent))
@@ -70,8 +70,8 @@ class SplashFragment : BaseFragment(R.layout.fragment_splash) {
         }
     }
 
-    private fun initAnimation(binding: FragmentSplashBinding) {
-        binding.splashLogoAnimation.addAnimatorListener(object : AnimatorListenerAdapter() {
+    private fun initAnimation() {
+        binding?.splashLogoAnimation?.addAnimatorListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
                 viewModel?.animate(animationSpeed)
