@@ -3,10 +3,12 @@ dependencies {
     testImplementation(project(Modules.Test))
 
     testImplementation(Dependencies.Junit)
+    testImplementation(Dependencies.Mockk)
 
     // Android test implementations
     androidTestImplementation(project(Modules.Test))
 
+    androidTestImplementation(Dependencies.AndroidMockk)
     androidTestImplementation(Dependencies.AndroidxTest)
     androidTestImplementation(Dependencies.AndroidxEspresso)
 }

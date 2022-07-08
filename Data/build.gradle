@@ -5,4 +5,7 @@ apply {
 
 dependencies {
     api(project(Modules.Domain))
+
+    // NanoHttpd
+    implementation(Dependencies.NanoHttpd)
 }

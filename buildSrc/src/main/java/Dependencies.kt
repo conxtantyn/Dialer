@@ -19,7 +19,11 @@ object Dependencies {
 
         const val Lottie = "4.2.0"
 
+        const val NanoHttpd = "2.3.0"
+
         const val Junit = "4.13.2"
+        const val Mockk = "1.12.4"
+        const val AndroidMockk = "1.12.4"
         const val AndroidxTest = "1.1.3"
         const val AndroidxEspresso = "3.4.0"
     }
@@ -61,8 +65,13 @@ object Dependencies {
     // lottie
     const val Lottie = "com.airbnb.android:lottie:${Version.Lottie}"
 
+    // nanoHttpd
+    const val NanoHttpd = "org.nanohttpd:nanohttpd:${Version.NanoHttpd}"
+
     // test
     const val Junit = "junit:junit:${Version.Junit}"
+    const val Mockk = "io.mockk:mockk:${Version.Mockk}"
+    const val AndroidMockk = "io.mockk:mockk-android:${Version.AndroidMockk}"
     const val AndroidxTest = "androidx.test.ext:junit:${Version.AndroidxTest}"
     const val AndroidxEspresso = "androidx.test.espresso:espresso-core:${Version.AndroidxEspresso}"
 }

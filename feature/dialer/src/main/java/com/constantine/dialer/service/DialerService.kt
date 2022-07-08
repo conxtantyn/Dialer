@@ -16,15 +16,29 @@ import com.constantine.dialer.R
 import com.constantine.dialer.service.extension.clearWith
 import com.constantine.dialer.service.extension.createNotificationChannel
 import com.constantine.dialer.service.extension.dispatch
+import com.constantine.domain.server.exception.ServerException
+import com.constantine.domain.server.model.Connection
+import com.constantine.domain.server.repository.ServerRepository
+import com.constantine.domain.server.usecase.ServerConnectionUsecase
+import com.constantine.domain.server.usecase.ServerDisconnectionUsecase
 import dagger.android.AndroidInjection
+import javax.inject.Inject
 
-internal class DialerService : Service() {
+internal class DialerService : Service(), ServerRepository.ConnectionListener {
 
     private val channelId: Int = 1
+
+    private val connectionDelay: Long = 500
 
     private val clients: MutableList<Messenger> = mutableListOf()
 
     private val messenger: Messenger = Messenger(IncomingHandler(this))
+
+    @Inject
+    internal lateinit var connectionUsecase: ServerConnectionUsecase
+
+    @Inject
+    internal lateinit var disconnectionUsecase: ServerDisconnectionUsecase
 
     override fun onCreate() {
         super.onCreate()
@@ -32,9 +46,8 @@ internal class DialerService : Service() {
 
         SERVICE_STATE = true
 
-        baseContext.sendBroadcast(Intent(Dialer::class.java.name))
         AndroidInjection.inject(this)
-        connect()
+        baseContext.sendBroadcast(Intent(Dialer::class.java.name))
     }
 
     private fun initNotification() {
@@ -52,11 +65,19 @@ internal class DialerService : Service() {
         startForeground(channelId, notification)
     }
 
-    private fun connect() {}
-
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Thread {
+            try {
+                Thread.sleep(connectionDelay)
+            } catch (e: InterruptedException) { }
+            connectionUsecase.connect(this)
+        }.start()
         return START_STICKY
     }
+
+    override fun onConnected(connection: Connection) {}
+
+    override fun onDisconnected(error: ServerException) = onStop()
 
     override fun onBind(intent: Intent?): IBinder = messenger.binder
 
@@ -69,14 +90,15 @@ internal class DialerService : Service() {
 
     private fun onStop() = stopService(baseContext)
 
-    private fun disconnect() {
-        SERVICE_STATE = false
-    }
-
     override fun onDestroy() {
         disconnect()
         clients.clearWith(Dialer.MsgStopService)
         super.onDestroy()
+    }
+
+    private fun disconnect() {
+        SERVICE_STATE = false
+        disconnectionUsecase.disconnect()
     }
 
     private class IncomingHandler(

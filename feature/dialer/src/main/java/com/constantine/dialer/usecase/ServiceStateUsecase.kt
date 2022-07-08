@@ -1,8 +1,10 @@
 package com.constantine.dialer.usecase
 
-import com.constantine.dialer.service.DialerService
+import com.constantine.dialer.repository.DialerServiceRepository
 import javax.inject.Inject
 
-class ServiceStateUsecase @Inject constructor() {
-    fun get(): Boolean = DialerService.IS_SERVICE_RUNNING
+class ServiceStateUsecase @Inject constructor(
+    private val repository: DialerServiceRepository
+) {
+    fun get(): Boolean = repository.isRunning()
 }

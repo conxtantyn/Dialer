@@ -1,6 +1,8 @@
 package com.constantine.domain.config
 
-interface DomainComponent {
+import com.constantine.domain.server.ServerComponent
+
+interface DomainComponent : ServerComponent {
     interface Injector {
         val domain: DomainComponent
     }
