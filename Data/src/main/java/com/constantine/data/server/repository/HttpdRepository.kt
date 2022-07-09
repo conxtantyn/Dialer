@@ -3,7 +3,7 @@ package com.constantine.data.server.repository
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ConnectionTerminatedException
 import com.constantine.domain.server.exception.ServerException
-import com.constantine.domain.server.model.Connection
+import com.constantine.domain.server.model.ConnectionInfo
 import com.constantine.domain.server.repository.ServerRepository
 import fi.iki.elonen.NanoHTTPD
 import java.io.IOException
@@ -20,17 +20,19 @@ class HttpdRepository @Inject constructor() : ServerRepository {
 
     override fun isAlive(): Boolean = httpd?.isAlive ?: false
 
-    override fun connect(listener: ServerRepository.ConnectionListener) {
+    override fun connect(host: String, port: Int, listener: ServerRepository.ConnectionListener) {
         listenerMap[listener] = listener.javaClass.name
         if (httpd == null) {
             try {
-                httpd = Httpd()
-                thread = createWatcher().also { it.start() }
+                httpd = Httpd(host, port)
+                thread = createWatcher()
+
+                thread?.start()
+                httpd?.getConnection()?.let { listener.onConnected(it) }
             } catch (ex: IOException) {
                 onDisconnect(ConnectionException())
             }
         }
-        listener.onConnected(Connection())
     }
 
     private fun createWatcher(): Thread {
@@ -59,13 +61,20 @@ class HttpdRepository @Inject constructor() : ServerRepository {
 
     override fun disconnect() = onDisconnect(ConnectionTerminatedException())
 
-    private class Httpd : NanoHTTPD(8080) {
+    private class Httpd(private val host: String, port: Int) : NanoHTTPD(port) {
         init {
             start(SOCKET_READ_TIMEOUT, false)
         }
 
         override fun serve(session: IHTTPSession?): Response {
             return newFixedLengthResponse("Hello, world")
+        }
+
+        fun getConnection(): ConnectionInfo {
+            return ConnectionInfo(
+                host = host,
+                port = listeningPort
+            )
         }
     }
 }

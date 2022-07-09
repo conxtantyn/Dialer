@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="host">http://localhost</string>
+
     <string name="processing">Processing</string>
     <string name="connected">Connected</string>
     <string name="disconnected">Disconnected</string>

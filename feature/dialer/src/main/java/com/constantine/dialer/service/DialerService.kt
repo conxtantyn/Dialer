@@ -5,6 +5,11 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -16,9 +21,11 @@ import com.constantine.dialer.R
 import com.constantine.dialer.service.extension.clearWith
 import com.constantine.dialer.service.extension.createNotificationChannel
 import com.constantine.dialer.service.extension.dispatch
+import com.constantine.dialer.service.extension.domain
+import com.constantine.dialer.util.getIPAddress
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ServerException
-import com.constantine.domain.server.model.Connection
+import com.constantine.domain.server.model.ConnectionInfo
 import com.constantine.domain.server.repository.ServerRepository
 import com.constantine.domain.server.usecase.ServerConnectionUsecase
 import com.constantine.domain.server.usecase.ServerDisconnectionUsecase
@@ -35,6 +42,17 @@ internal class DialerService : Service(), ServerRepository.ConnectionListener {
 
     private val messenger: Messenger = Messenger(IncomingHandler(this))
 
+    private val connectivityManager: ConnectivityManager by lazy {
+        getSystemService(ConnectivityManager::class.java)
+    }
+
+    private val networkCallback: ConnectivityManager.NetworkCallback by lazy {
+        NetworkCallbackHandler(uri.domain, messenger)
+    }
+
+    @Inject
+    internal lateinit var uri: Uri
+
     @Inject
     internal lateinit var connectionUsecase: ServerConnectionUsecase
 
@@ -49,6 +67,13 @@ internal class DialerService : Service(), ServerRepository.ConnectionListener {
 
         AndroidInjection.inject(this)
         baseContext.sendBroadcast(Intent(Dialer::class.java.name))
+        connectivityManager.registerNetworkCallback(
+            NetworkRequest
+                .Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build(),
+            networkCallback
+        )
     }
 
     private fun initNotification() {
@@ -71,12 +96,12 @@ internal class DialerService : Service(), ServerRepository.ConnectionListener {
             try {
                 Thread.sleep(connectionDelay)
             } catch (e: InterruptedException) { }
-            connectionUsecase.connect(this)
+            connectionUsecase.connect(uri.domain, uri.port, this)
         }.start()
         return START_STICKY
     }
 
-    override fun onConnected(connection: Connection) {}
+    override fun onConnected(connection: ConnectionInfo) {}
 
     override fun onDisconnected(error: ServerException) {
         if (error is ConnectionException) {
@@ -98,6 +123,7 @@ internal class DialerService : Service(), ServerRepository.ConnectionListener {
     override fun onDestroy() {
         disconnect()
         clients.clearWith(Dialer.MsgStopService)
+        connectivityManager.unregisterNetworkCallback(networkCallback)
         super.onDestroy()
     }
 
@@ -120,6 +146,23 @@ internal class DialerService : Service(), ServerRepository.ConnectionListener {
                 }
                 else -> super.handleMessage(msg)
             }
+        }
+    }
+
+    private class NetworkCallbackHandler constructor(
+        private val host: String,
+        private val messenger: Messenger
+    ) : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            val address = getIPAddress()
+
+            messenger.dispatch(Dialer.MsgConnectionChange, address)
+            super.onAvailable(network)
+        }
+
+        override fun onLost(network: Network) {
+            messenger.dispatch(Dialer.MsgConnectionChange, host)
+            super.onLost(network)
         }
     }
 

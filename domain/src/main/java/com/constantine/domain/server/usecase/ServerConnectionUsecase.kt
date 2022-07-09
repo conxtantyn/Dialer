@@ -6,7 +6,7 @@ import javax.inject.Inject
 class ServerConnectionUsecase @Inject constructor(
     private val repository: ServerRepository
 ) {
-    fun connect(listener: ServerRepository.ConnectionListener) {
-        repository.connect(listener)
+    fun connect(host: String, port: Int, listener: ServerRepository.ConnectionListener) {
+        repository.connect(host, port, listener)
     }
 }

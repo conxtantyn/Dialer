@@ -7,4 +7,5 @@ object Dialer {
 
     const val MsgServerConnected = 4
     const val MsgServerConnecting = 5
+    const val MsgConnectionChange = 6
 }

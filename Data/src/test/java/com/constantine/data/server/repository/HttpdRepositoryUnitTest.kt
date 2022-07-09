@@ -1,8 +1,9 @@
 package com.constantine.data.server.repository
 
 import com.constantine.domain.server.exception.ServerException
-import com.constantine.domain.server.model.Connection
+import com.constantine.domain.server.model.ConnectionInfo
 import com.constantine.domain.server.repository.ServerRepository
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
@@ -20,7 +21,7 @@ internal class HttpdRepositoryUnitTest {
     fun onSetup() {
         repository = HttpdRepository()
         listener = object : ServerRepository.ConnectionListener {
-            override fun onConnected(connection: Connection) {
+            override fun onConnected(connection: ConnectionInfo) {
                 mockListener.onConnected(connection)
             }
 
@@ -32,7 +33,9 @@ internal class HttpdRepositoryUnitTest {
 
     @Test
     fun `when listener service is destroyed by the os`() {
-        listener?.let { repository.connect(it) }
+        every { mockListener.onConnected(any()) } answers {}
+
+        listener?.let { repository.connect("", 8080, it) }
         listener = null
         repository.disconnect()
 
