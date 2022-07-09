@@ -16,16 +16,34 @@ class HttpdRepository @Inject constructor() : ServerRepository {
 
     private var httpd: Httpd? = null
 
+    private var thread: Thread? = null
+
+    override fun isAlive(): Boolean = httpd?.isAlive ?: false
+
     override fun connect(listener: ServerRepository.ConnectionListener) {
         listenerMap[listener] = listener.javaClass.name
         if (httpd == null) {
             try {
                 httpd = Httpd()
+                thread = createWatcher().also { it.start() }
             } catch (ex: IOException) {
                 onDisconnect(ConnectionException())
             }
         }
         listener.onConnected(Connection())
+    }
+
+    private fun createWatcher(): Thread {
+        return Thread {
+            while (isAlive()) {
+                try {
+                    Thread.sleep(10L)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+            onDisconnect(ConnectionException())
+        }
     }
 
     private fun onDisconnect(ex: ServerException) {
@@ -34,7 +52,9 @@ class HttpdRepository @Inject constructor() : ServerRepository {
         listenerMap.keys.forEach {
             it.onDisconnected(ex)
         }
+        listenerMap.clear()
         httpd = null
+        thread = null
     }
 
     override fun disconnect() = onDisconnect(ConnectionTerminatedException())

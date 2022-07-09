@@ -16,6 +16,7 @@ import com.constantine.dialer.R
 import com.constantine.dialer.service.extension.clearWith
 import com.constantine.dialer.service.extension.createNotificationChannel
 import com.constantine.dialer.service.extension.dispatch
+import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ServerException
 import com.constantine.domain.server.model.Connection
 import com.constantine.domain.server.repository.ServerRepository
@@ -77,7 +78,11 @@ internal class DialerService : Service(), ServerRepository.ConnectionListener {
 
     override fun onConnected(connection: Connection) {}
 
-    override fun onDisconnected(error: ServerException) = onStop()
+    override fun onDisconnected(error: ServerException) {
+        if (error is ConnectionException) {
+            onStop()
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder = messenger.binder
 

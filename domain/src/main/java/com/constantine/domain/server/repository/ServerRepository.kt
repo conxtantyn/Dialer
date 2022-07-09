@@ -4,6 +4,7 @@ import com.constantine.domain.server.exception.ServerException
 import com.constantine.domain.server.model.Connection
 
 interface ServerRepository {
+    fun isAlive(): Boolean
     fun connect(listener: ConnectionListener)
     fun disconnect()
 
