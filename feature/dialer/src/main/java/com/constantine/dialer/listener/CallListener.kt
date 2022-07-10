@@ -9,10 +9,13 @@ import java.util.WeakHashMap
 interface CallListener {
     fun onCallStateChanged(state: Int)
 
+    interface CallState
+
     @RequiresApi(Build.VERSION_CODES.S)
     class Telephony(listener: CallListener) :
         TelephonyCallback(),
-        TelephonyCallback.CallStateListener {
+        TelephonyCallback.CallStateListener,
+        CallState {
         private val listenerMap = WeakHashMap<CallListener, String>()
 
         init {
@@ -25,13 +28,14 @@ interface CallListener {
         }
     }
 
-    class PhoneState(listener: CallListener) : PhoneStateListener() {
+    class PhoneState(listener: CallListener) : PhoneStateListener(), CallState {
         private val listenerMap = WeakHashMap<CallListener, String>()
 
         init {
             listenerMap[listener] = listener.javaClass.name
         }
 
+        @Deprecated("Deprecated in Java")
         override fun onCallStateChanged(state: Int, phoneNumber: String?) {
             System.gc()
             listenerMap.keys.forEach { it.onCallStateChanged(state) }

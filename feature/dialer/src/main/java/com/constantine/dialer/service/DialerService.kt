@@ -18,12 +18,16 @@ import android.os.Message
 import android.os.Messenger
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyCallback
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.constantine.dialer.R
 import com.constantine.dialer.listener.CallListener
 import com.constantine.dialer.service.Dialer.MsgCallStateChange
-import com.constantine.dialer.service.extension.*
+import com.constantine.dialer.service.extension.clearWith
+import com.constantine.dialer.service.extension.connectivity
+import com.constantine.dialer.service.extension.createNotificationChannel
+import com.constantine.dialer.service.extension.dispatch
+import com.constantine.dialer.service.extension.domain
+import com.constantine.dialer.service.extension.telephony
 import com.constantine.dialer.util.getIPAddress
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ServerException
@@ -44,10 +48,13 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
 
     private val messenger: Messenger = Messenger(IncomingHandler(this))
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    private val telephonyCallback: TelephonyCallback = CallListener.Telephony(this)
-
-    private val phoneStateListener: PhoneStateListener = CallListener.PhoneState(this)
+    private val callState: CallListener.CallState by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            CallListener.Telephony(this)
+        } else {
+            CallListener.PhoneState(this)
+        }
+    }
 
     private val networkCallback: ConnectivityManager.NetworkCallback by lazy {
         NetworkCallbackHandler(uri.domain, messenger)
@@ -91,9 +98,9 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
 
     private fun attachListeners() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            telephony.registerTelephonyCallback(mainExecutor, telephonyCallback)
+            telephony.registerTelephonyCallback(mainExecutor, callState as TelephonyCallback)
         } else {
-            telephony.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
+            telephony.listen(callState as PhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
         }
         connectivity.registerNetworkCallback(
             NetworkRequest
@@ -139,7 +146,9 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
         disconnect()
         clients.clearWith(Dialer.MsgStopService)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            telephony.unregisterTelephonyCallback(telephonyCallback)
+            telephony.unregisterTelephonyCallback(callState as TelephonyCallback)
+        } else {
+            telephony.listen(callState as PhoneStateListener, PhoneStateListener.LISTEN_NONE)
         }
         connectivity.unregisterNetworkCallback(networkCallback)
         super.onDestroy()
