@@ -9,10 +9,6 @@ fun Messenger.dispatch(what: Int, data: Any?) {
     send(Message.obtain(null, what, data))
 }
 
-fun MutableList<Messenger>.dispatch(what: Int) {
-    forEach { it.send(Message.obtain(null, what)) }
-}
-
 fun MutableList<Messenger>.clearWith(what: Int) {
     forEach {
         it.send(Message.obtain(null, what))
