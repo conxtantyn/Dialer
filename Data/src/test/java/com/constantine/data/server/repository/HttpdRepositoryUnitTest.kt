@@ -19,7 +19,7 @@ internal class HttpdRepositoryUnitTest {
 
     @Before
     fun onSetup() {
-        repository = HttpdRepository()
+        repository = HttpdRepository(mockk())
         listener = object : ServerRepository.ConnectionListener {
             override fun onConnected(connection: ConnectionInfo) {
                 mockListener.onConnected(connection)

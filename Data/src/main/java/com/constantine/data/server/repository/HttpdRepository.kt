@@ -1,5 +1,7 @@
 package com.constantine.data.server.repository
 
+import android.net.Uri
+import com.constantine.data.content.ResourceManager
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ConnectionTerminatedException
 import com.constantine.domain.server.exception.ServerException
@@ -10,7 +12,9 @@ import java.io.IOException
 import java.util.WeakHashMap
 import javax.inject.Inject
 
-class HttpdRepository @Inject constructor() : ServerRepository {
+class HttpdRepository @Inject constructor(
+    private val resourceManager: ResourceManager
+) : ServerRepository {
 
     private val listenerMap = WeakHashMap<ServerRepository.ConnectionListener, String>()
 
@@ -24,7 +28,7 @@ class HttpdRepository @Inject constructor() : ServerRepository {
         listenerMap[listener] = listener.javaClass.name
         if (httpd == null) {
             try {
-                httpd = Httpd(host, port)
+                httpd = Httpd(host, port, resourceManager)
                 thread = createWatcher()
 
                 thread?.start()
@@ -61,13 +65,22 @@ class HttpdRepository @Inject constructor() : ServerRepository {
 
     override fun disconnect() = onDisconnect(ConnectionTerminatedException())
 
-    private class Httpd(private val host: String, port: Int) : NanoHTTPD(port) {
+    private class Httpd(
+        private val host: String,
+        port: Int,
+        private val resourceManager: ResourceManager
+    ) : NanoHTTPD(port) {
         init {
             start(SOCKET_READ_TIMEOUT, false)
         }
 
-        override fun serve(session: IHTTPSession?): Response {
-            return newFixedLengthResponse("Hello, world")
+        override fun serve(session: IHTTPSession): Response {
+            val uri = Uri.parse(session.uri)
+            val route = resourceManager.getResource(uri) ?: return newFixedLengthResponse(
+                Response.Status.NOT_FOUND, MIME_PLAINTEXT,
+                "Not Found"
+            )
+            return route.resource.serve(session, route.path)
         }
 
         fun getConnection(): ConnectionInfo {

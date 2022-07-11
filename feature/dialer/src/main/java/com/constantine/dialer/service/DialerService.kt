@@ -143,8 +143,10 @@ internal class DialerService :
     override fun onDestroy() {
         disconnect()
         unRegisterService()
+
         clients.clearWith(Dialer.MsgStopService)
         connectivity.unregisterNetworkCallback(networkCallback)
+
         super.onDestroy()
     }
 

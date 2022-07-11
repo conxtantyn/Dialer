@@ -1,6 +1,5 @@
 package com.constantine.dialer.listener
 
-import android.app.Service
 import android.content.Context
 import android.os.Build
 import android.telephony.PhoneStateListener
