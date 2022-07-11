@@ -1,8 +1,11 @@
 package com.constantine.dialer.listener
 
+import android.app.Service
+import android.content.Context
 import android.os.Build
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyCallback
+import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import java.util.WeakHashMap
 
@@ -10,6 +13,15 @@ interface CallListener {
     fun onCallStateChanged(state: Int)
 
     interface CallState
+
+    interface CallService {
+        fun registerService(
+            service: Context,
+            telephony: TelephonyManager,
+            listener: CallListener
+        )
+        fun unRegisterService()
+    }
 
     @RequiresApi(Build.VERSION_CODES.S)
     class Telephony(listener: CallListener) :

@@ -16,11 +16,10 @@ import android.os.IBinder
 import android.os.Looper
 import android.os.Message
 import android.os.Messenger
-import android.telephony.PhoneStateListener
-import android.telephony.TelephonyCallback
 import androidx.core.app.NotificationCompat
 import com.constantine.dialer.R
 import com.constantine.dialer.listener.CallListener
+import com.constantine.dialer.listener.implementation.CallServiceImplementation
 import com.constantine.dialer.service.Dialer.MsgCallStateChange
 import com.constantine.dialer.service.extension.clearWith
 import com.constantine.dialer.service.extension.connectivity
@@ -33,12 +32,17 @@ import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ServerException
 import com.constantine.domain.server.model.ConnectionInfo
 import com.constantine.domain.server.repository.ServerRepository
+import com.constantine.domain.server.usecase.CallStateUsecase
 import com.constantine.domain.server.usecase.ServerConnectionUsecase
 import com.constantine.domain.server.usecase.ServerDisconnectionUsecase
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
-internal class DialerService : Service(), CallListener, ServerRepository.ConnectionListener {
+internal class DialerService :
+    Service(),
+    CallListener,
+    ServerRepository.ConnectionListener,
+    CallListener.CallService by CallServiceImplementation() {
 
     private val channelId: Int = 1
 
@@ -48,20 +52,15 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
 
     private val messenger: Messenger = Messenger(IncomingHandler(this))
 
-    private val callState: CallListener.CallState by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            CallListener.Telephony(this)
-        } else {
-            CallListener.PhoneState(this)
-        }
-    }
-
     private val networkCallback: ConnectivityManager.NetworkCallback by lazy {
         NetworkCallbackHandler(uri.domain, messenger)
     }
 
     @Inject
     internal lateinit var uri: Uri
+
+    @Inject
+    internal lateinit var callStateusecase: CallStateUsecase
 
     @Inject
     internal lateinit var connectionUsecase: ServerConnectionUsecase
@@ -97,11 +96,7 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
     }
 
     private fun attachListeners() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            telephony.registerTelephonyCallback(mainExecutor, callState as TelephonyCallback)
-        } else {
-            telephony.listen(callState as PhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE)
-        }
+        registerService(this, telephony, this)
         connectivity.registerNetworkCallback(
             NetworkRequest
                 .Builder()
@@ -111,7 +106,10 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
         )
     }
 
-    override fun onCallStateChanged(state: Int) = messenger.dispatch(MsgCallStateChange, state)
+    override fun onCallStateChanged(state: Int) {
+        callStateusecase.onChange(state)
+        messenger.dispatch(MsgCallStateChange, state)
+    }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Thread {
@@ -144,12 +142,8 @@ internal class DialerService : Service(), CallListener, ServerRepository.Connect
 
     override fun onDestroy() {
         disconnect()
+        unRegisterService()
         clients.clearWith(Dialer.MsgStopService)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            telephony.unregisterTelephonyCallback(callState as TelephonyCallback)
-        } else {
-            telephony.listen(callState as PhoneStateListener, PhoneStateListener.LISTEN_NONE)
-        }
         connectivity.unregisterNetworkCallback(networkCallback)
         super.onDestroy()
     }

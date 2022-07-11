@@ -3,6 +3,7 @@ package com.constantine.android
 import com.constantine.core.component.SplitApplication
 import com.constantine.core.config.DaggerCoreComponent
 import com.constantine.data.config.DaggerDataComponent
+import com.constantine.data.config.module.DataModule
 import com.constantine.domain.config.DomainComponent
 import dagger.android.AndroidInjector
 import dagger.android.HasAndroidInjector
@@ -26,7 +27,10 @@ class MainApplication : SplitApplication(), DomainComponent.Injector, HasAndroid
     }
 
     private fun initDaggerAppComponent() {
-        dataComponent = DaggerDataComponent.builder().build()
+        dataComponent = DaggerDataComponent
+            .builder()
+            .dataModule(DataModule(this))
+            .build()
         val component = DaggerCoreComponent
             .builder()
             .application(this)
