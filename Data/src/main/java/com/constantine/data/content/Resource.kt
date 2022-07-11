@@ -10,13 +10,6 @@ abstract class Resource {
     private val resourceMapper: MutableMap<NanoHTTPD.Method,
         MutableMap<String, Method>> = mutableMapOf()
 
-    private val notFoundResponse: NanoHTTPD.Response by lazy {
-        NanoHTTPD.newFixedLengthResponse(
-            NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT,
-            "Not Found"
-        )
-    }
-
     fun serve(session: NanoHTTPD.IHTTPSession, path: String): NanoHTTPD.Response {
         if (!isInitialize) {
             initialize()
@@ -70,5 +63,12 @@ abstract class Resource {
             }
         }
         isInitialize = true
+    }
+
+    companion object {
+        val notFoundResponse: NanoHTTPD.Response = NanoHTTPD.newFixedLengthResponse(
+            NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT,
+            "Not Found"
+        )
     }
 }

@@ -6,5 +6,5 @@ import javax.inject.Inject
 class CallStateUsecase @Inject constructor(
     private val repository: CallRepository
 ) {
-    fun onChange(state: Int) = repository.onStateChanged(state)
+    fun onChange(state: Int, number: String) = repository.onStateChanged(state, number)
 }

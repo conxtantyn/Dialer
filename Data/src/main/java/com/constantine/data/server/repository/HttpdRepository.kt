@@ -1,6 +1,7 @@
 package com.constantine.data.server.repository
 
 import android.net.Uri
+import com.constantine.data.content.Resource.Companion.notFoundResponse
 import com.constantine.data.content.ResourceManager
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ConnectionTerminatedException
@@ -76,10 +77,8 @@ class HttpdRepository @Inject constructor(
 
         override fun serve(session: IHTTPSession): Response {
             val uri = Uri.parse(session.uri)
-            val route = resourceManager.getResource(uri) ?: return newFixedLengthResponse(
-                Response.Status.NOT_FOUND, MIME_PLAINTEXT,
-                "Not Found"
-            )
+            val route = resourceManager.getResource(uri) ?: return notFoundResponse
+
             return route.resource.serve(session, route.path)
         }
 

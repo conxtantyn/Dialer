@@ -18,15 +18,14 @@ import android.os.Message
 import android.os.Messenger
 import androidx.core.app.NotificationCompat
 import com.constantine.dialer.R
-import com.constantine.dialer.listener.CallListener
-import com.constantine.dialer.listener.implementation.CallServiceImplementation
+import com.constantine.dialer.listener.CallManager
+import com.constantine.dialer.listener.implementation.CallManagerImplementation
 import com.constantine.dialer.service.Dialer.MsgCallStateChange
 import com.constantine.dialer.service.extension.clearWith
 import com.constantine.dialer.service.extension.connectivity
 import com.constantine.dialer.service.extension.createNotificationChannel
 import com.constantine.dialer.service.extension.dispatch
 import com.constantine.dialer.service.extension.domain
-import com.constantine.dialer.service.extension.telephony
 import com.constantine.dialer.util.getIPAddress
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ServerException
@@ -40,9 +39,8 @@ import javax.inject.Inject
 
 internal class DialerService :
     Service(),
-    CallListener,
-    ServerRepository.ConnectionListener,
-    CallListener.CallService by CallServiceImplementation() {
+    CallManager.CallListener,
+    ServerRepository.ConnectionListener {
 
     private val channelId: Int = 1
 
@@ -51,6 +49,8 @@ internal class DialerService :
     private val clients: MutableList<Messenger> = mutableListOf()
 
     private val messenger: Messenger = Messenger(IncomingHandler(this))
+
+    private val callManager: CallManager = CallManagerImplementation()
 
     private val networkCallback: ConnectivityManager.NetworkCallback by lazy {
         NetworkCallbackHandler(uri.domain, messenger)
@@ -96,7 +96,7 @@ internal class DialerService :
     }
 
     private fun attachListeners() {
-        registerService(this, telephony, this)
+        callManager.registerService(this, this)
         connectivity.registerNetworkCallback(
             NetworkRequest
                 .Builder()
@@ -106,8 +106,8 @@ internal class DialerService :
         )
     }
 
-    override fun onCallStateChanged(state: Int) {
-        callStateusecase.onChange(state)
+    override fun onCallStateChanged(state: Int, number: String) {
+        callStateusecase.onChange(state, number)
         messenger.dispatch(MsgCallStateChange, state)
     }
 
@@ -142,9 +142,9 @@ internal class DialerService :
 
     override fun onDestroy() {
         disconnect()
-        unRegisterService()
 
         clients.clearWith(Dialer.MsgStopService)
+        callManager.unRegisterService(this)
         connectivity.unregisterNetworkCallback(networkCallback)
 
         super.onDestroy()
