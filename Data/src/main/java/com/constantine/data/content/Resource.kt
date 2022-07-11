@@ -1,6 +1,8 @@
 package com.constantine.data.content
 
 import com.constantine.data.config.scope.Endpoint
+import com.constantine.data.server.model.ErrorModel
+import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
 import java.lang.reflect.Method
 
@@ -66,9 +68,11 @@ abstract class Resource {
     }
 
     companion object {
+        const val jsonMimeType: String = "text/json"
+
         val notFoundResponse: NanoHTTPD.Response = NanoHTTPD.newFixedLengthResponse(
             NanoHTTPD.Response.Status.NOT_FOUND, NanoHTTPD.MIME_PLAINTEXT,
-            "Not Found"
+            Gson().toJson(ErrorModel("Not Found"))
         )
     }
 }

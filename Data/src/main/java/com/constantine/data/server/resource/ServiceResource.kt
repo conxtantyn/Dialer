@@ -2,8 +2,10 @@ package com.constantine.data.server.resource
 
 import com.constantine.data.config.scope.Endpoint
 import com.constantine.data.content.Resource
+import com.constantine.data.server.model.ErrorModel
 import com.constantine.domain.server.usecase.CallStatusUsecase
 import com.constantine.domain.server.usecase.GetCallLogListUsecase
+import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -15,11 +17,24 @@ class ServiceResource @Inject constructor(
 
     @Endpoint(method = NanoHTTPD.Method.GET, value = "/logs")
     fun log(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response = runBlocking {
-        NanoHTTPD.newFixedLengthResponse("Log...${getCallLogListUsecase.log()}")
+        NanoHTTPD.newFixedLengthResponse(
+            NanoHTTPD.Response.Status.OK,
+            jsonMimeType,
+            Gson().toJson(getCallLogListUsecase.log())
+        )
     }
 
     @Endpoint(method = NanoHTTPD.Method.GET, value = "/status")
     fun status(session: NanoHTTPD.IHTTPSession): NanoHTTPD.Response {
-        return NanoHTTPD.newFixedLengthResponse("Status...${callStatusUsecase.status()}")
+        val status = callStatusUsecase.status()
+        return NanoHTTPD.newFixedLengthResponse(
+            if (status == null) {
+                NanoHTTPD.Response.Status.BAD_REQUEST
+            } else NanoHTTPD.Response.Status.OK,
+            jsonMimeType,
+            if (status == null) {
+                Gson().toJson(ErrorModel("No active call"))
+            } else Gson().toJson(status)
+        )
     }
 }

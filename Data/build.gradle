@@ -12,6 +12,9 @@ dependencies {
 
     kapt(Dependencies.RoomCompiler)
 
+    // Room
+    implementation(Dependencies.Gson)
+
     // NanoHttpd
     implementation(Dependencies.NanoHttpd)
 }
