@@ -6,6 +6,12 @@ apply {
 dependencies {
     api(project(Modules.Domain))
 
+    // Room
+    implementation(Dependencies.Room)
+    implementation(Dependencies.RoomRuntime)
+
+    kapt(Dependencies.RoomCompiler)
+
     // NanoHttpd
     implementation(Dependencies.NanoHttpd)
 }

@@ -1,4 +1,4 @@
-package com.constantine.data.resource
+package com.constantine.data.server.resource
 
 import com.constantine.data.config.scope.Endpoint
 import com.constantine.data.content.Resource

@@ -12,6 +12,7 @@ object Dependencies {
         const val AndroidGoogleMaterial = "1.6.1"
         const val AndroidxLegacySupport = "1.0.0"
 
+        const val Room = "2.4.2"
         const val Navigation = "2.4.1"
 
         const val Dagger = "2.42"
@@ -43,6 +44,11 @@ object Dependencies {
             ":material:${Version.AndroidGoogleMaterial}"
     const val AndroidxLegacySupport = "androidx.legacy:legacy-support-v4" +
             ":${Version.AndroidxLegacySupport}"
+
+    // room
+    const val Room = "androidx.room:room-ktx:${Version.Room}"
+    const val RoomRuntime = "androidx.room:room-runtime:${Version.Room}"
+    const val RoomCompiler = "androidx.room:room-compiler:${Version.Room}"
 
     // navigation
     const val NavigationUI = "androidx.navigation:navigation-ui-ktx:${Version.Navigation}"

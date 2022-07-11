@@ -5,13 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.constantine.core.component.SingleLiveEvent
+import com.constantine.domain.usecase.BootstrapUsecase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-internal class SplashViewModel @Inject constructor() : ViewModel(), Splash.ViewModel {
+internal class SplashViewModel @Inject constructor(
+    private val bootstrapUsecase: BootstrapUsecase
+) : ViewModel(), Splash.ViewModel {
     private val mutableState = MutableLiveData<Splash.State>()
 
     private val mutableEvent = SingleLiveEvent<Splash.Event>()
@@ -23,6 +26,7 @@ internal class SplashViewModel @Inject constructor() : ViewModel(), Splash.ViewM
     override fun animate(duration: Long) {
         viewModelScope.launch {
             delay(duration)
+            bootstrapUsecase.init()
             withContext(Dispatchers.Main) {
                 mutableEvent.value = Splash.Event.AnimationEnd
             }
