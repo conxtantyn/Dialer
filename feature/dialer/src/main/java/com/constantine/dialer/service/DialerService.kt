@@ -35,6 +35,7 @@ import com.constantine.domain.server.usecase.CallStateUsecase
 import com.constantine.domain.server.usecase.ServerConnectionUsecase
 import com.constantine.domain.server.usecase.ServerDisconnectionUsecase
 import dagger.android.AndroidInjection
+import java.util.WeakHashMap
 import javax.inject.Inject
 
 internal class DialerService :
@@ -134,6 +135,7 @@ internal class DialerService :
     private fun onRegister(messenger: Messenger) {
         clients.add(messenger)
         messenger.dispatch(Dialer.MsgRegisterClient)
+        messenger.dispatch(Dialer.MsgConnectionChange, getIPAddress())
     }
 
     private fun onUnRegister(messenger: Messenger) = clients.remove(messenger)
@@ -174,17 +176,26 @@ internal class DialerService :
 
     private class NetworkCallbackHandler constructor(
         private val host: String,
-        private val clients: MutableList<Messenger>
+        clients: List<Messenger>
     ) : ConnectivityManager.NetworkCallback() {
+        private val clientsMapper = WeakHashMap<List<Messenger>, Int>().also {
+            it[clients] = clients.size
+        }
+
         override fun onAvailable(network: Network) {
             val address = getIPAddress() ?: host
-
-            clients.dispatch(Dialer.MsgConnectionChange, address)
+            System.gc()
+            clientsMapper.keys.forEach {
+                it.dispatch(Dialer.MsgConnectionChange, address)
+            }
             super.onAvailable(network)
         }
 
         override fun onLost(network: Network) {
-            clients.dispatch(Dialer.MsgConnectionChange, host)
+            System.gc()
+            clientsMapper.keys.forEach {
+                it.dispatch(Dialer.MsgConnectionChange, host)
+            }
             super.onLost(network)
         }
     }

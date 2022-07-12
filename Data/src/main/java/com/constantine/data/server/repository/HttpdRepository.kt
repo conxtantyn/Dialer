@@ -17,7 +17,8 @@ class HttpdRepository @Inject constructor(
     private val resourceUtil: ResourceUtil
 ) : ServerRepository {
 
-    private val listenerMap = WeakHashMap<ServerRepository.ConnectionListener, String>()
+    @Volatile
+    private var listenerMap = WeakHashMap<ServerRepository.ConnectionListener, String>()
 
     private var httpd: Httpd? = null
 
