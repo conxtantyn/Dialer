@@ -183,8 +183,8 @@ internal class DialerService :
         }
 
         override fun onAvailable(network: Network) {
-            val address = getIPAddress() ?: host
             System.gc()
+            val address = getIPAddress() ?: host
             clientsMapper.keys.forEach {
                 it.dispatch(Dialer.MsgConnectionChange, address)
             }
@@ -193,8 +193,9 @@ internal class DialerService :
 
         override fun onLost(network: Network) {
             System.gc()
+            val address = getIPAddress() ?: host
             clientsMapper.keys.forEach {
-                it.dispatch(Dialer.MsgConnectionChange, host)
+                it.dispatch(Dialer.MsgConnectionChange, address)
             }
             super.onLost(network)
         }

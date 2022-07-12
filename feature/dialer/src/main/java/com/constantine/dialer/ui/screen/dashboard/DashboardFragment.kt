@@ -16,7 +16,6 @@ import android.os.Looper
 import android.os.Message
 import android.os.Messenger
 import android.view.View
-import android.widget.Toast.LENGTH_LONG
 import androidx.core.app.ActivityCompat
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -176,7 +175,7 @@ class DashboardFragment :
 
     private fun showSnackbar(text: String) {
         binding?.let {
-            Snackbar.make(it.root, text, LENGTH_LONG).show()
+            Snackbar.make(it.root, text, Snackbar.LENGTH_LONG).show()
         }
     }
 
