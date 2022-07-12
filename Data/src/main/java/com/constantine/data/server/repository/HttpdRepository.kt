@@ -2,7 +2,7 @@ package com.constantine.data.server.repository
 
 import android.net.Uri
 import com.constantine.data.content.Resource.Companion.notFoundResponse
-import com.constantine.data.content.ResourceManager
+import com.constantine.data.util.ResourceUtil
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ConnectionTerminatedException
 import com.constantine.domain.server.exception.ServerException
@@ -14,7 +14,7 @@ import java.util.WeakHashMap
 import javax.inject.Inject
 
 class HttpdRepository @Inject constructor(
-    private val resourceManager: ResourceManager
+    private val resourceUtil: ResourceUtil
 ) : ServerRepository {
 
     private val listenerMap = WeakHashMap<ServerRepository.ConnectionListener, String>()
@@ -29,7 +29,7 @@ class HttpdRepository @Inject constructor(
         listenerMap[listener] = listener.javaClass.name
         if (httpd == null) {
             try {
-                httpd = Httpd(host, port, resourceManager)
+                httpd = Httpd(host, port, resourceUtil)
                 thread = createWatcher()
 
                 thread?.start()
@@ -69,7 +69,7 @@ class HttpdRepository @Inject constructor(
     private class Httpd(
         private val host: String,
         port: Int,
-        private val resourceManager: ResourceManager
+        private val resourceUtil: ResourceUtil
     ) : NanoHTTPD(port) {
         init {
             start(SOCKET_READ_TIMEOUT, false)
@@ -77,7 +77,7 @@ class HttpdRepository @Inject constructor(
 
         override fun serve(session: IHTTPSession): Response {
             val uri = Uri.parse(session.uri)
-            val route = resourceManager.getResource(uri) ?: return notFoundResponse
+            val route = resourceUtil.getResource(uri) ?: return notFoundResponse
 
             return route.resource.serve(session, route.path)
         }

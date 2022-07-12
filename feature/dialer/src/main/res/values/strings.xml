@@ -8,4 +8,6 @@
 
     <string name="channelName">Dialer</string>
     <string name="channelTitle">Dialer service</string>
+
+    <string name="permissionText">Please enable %s to proceed</string>
 </resources>

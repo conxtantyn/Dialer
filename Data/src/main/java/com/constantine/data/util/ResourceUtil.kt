@@ -1,9 +1,11 @@
-package com.constantine.data.content
+package com.constantine.data.util
 
 import android.net.Uri
+import com.constantine.data.content.Resource
+import com.constantine.data.content.Route
 import javax.inject.Inject
 
-class ResourceManager @Inject constructor(
+class ResourceUtil @Inject constructor(
     private val resources: Map<String, @JvmSuppressWildcards Resource>
 ) {
     fun getResource(uri: Uri): Route? {

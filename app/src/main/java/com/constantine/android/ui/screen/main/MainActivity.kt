@@ -3,6 +3,7 @@ package com.constantine.android.ui.screen.main
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.constantine.android.R
+import com.constantine.android.content.HasPermission
 import com.constantine.android.ui.component.BaseActivity
 import com.constantine.core.content.SimpleAndroidInjector
 import dagger.android.AndroidInjector
@@ -34,6 +35,22 @@ class MainActivity : BaseActivity() {
             }
         }
         return super.androidInjector()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.let {
+            it.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+                if (fragment is HasPermission) {
+                    fragment.onRequestPermissions(requestCode, permissions, grantResults)
+                    return
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onDestroy() {

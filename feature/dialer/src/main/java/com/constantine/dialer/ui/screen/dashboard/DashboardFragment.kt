@@ -1,11 +1,14 @@
 package com.constantine.dialer.ui.screen.dashboard
 
+import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
@@ -13,17 +16,24 @@ import android.os.Looper
 import android.os.Message
 import android.os.Messenger
 import android.view.View
+import android.widget.Toast.LENGTH_LONG
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.constantine.android.content.HasPermission
 import com.constantine.android.ui.component.BaseFragment
 import com.constantine.dialer.R
 import com.constantine.dialer.databinding.FragmentDashboardBinding
 import com.constantine.dialer.service.Dialer
 import com.constantine.dialer.ui.screen.dashboard.extension.handleAction
 import com.constantine.dialer.ui.screen.dashboard.extension.value
+import com.google.android.material.snackbar.Snackbar
 
-class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ServiceConnection {
+class DashboardFragment :
+    BaseFragment(R.layout.fragment_dashboard),
+    ServiceConnection,
+    HasPermission {
 
     private var messenger: Messenger? = null
 
@@ -79,9 +89,77 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard), ServiceConn
             it.value = enable
             it.isChecked = enable
             it.setOnCheckedChangeListener { _, state ->
-                binding?.serverSwitch?.text = getString(R.string.processing)
-                toggleService(state)
+                handleSwitch(state)
             }
+        }
+    }
+
+    private fun handleSwitch(state: Boolean) {
+        if (!hasRequiredPermissions()) {
+            return requestRequiredPermissions()
+        }
+        binding?.serverSwitch?.text = getString(R.string.processing)
+        toggleService(state)
+    }
+
+    private fun hasRequiredPermissions(): Boolean {
+        return !mutableListOf(
+            requireContext().checkSelfPermission(Manifest.permission.READ_CONTACTS),
+            requireContext().checkSelfPermission(Manifest.permission.READ_PHONE_STATE),
+            requireContext().checkSelfPermission(Manifest.permission.READ_CALL_LOG),
+            requireContext().checkSelfPermission(Manifest.permission.WRITE_CALL_LOG),
+            requireContext().checkSelfPermission(Manifest.permission.WRITE_CONTACTS),
+        ).also {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.add(
+                    requireContext()
+                        .checkSelfPermission(Manifest.permission.FOREGROUND_SERVICE)
+                )
+            }
+        }.contains(PackageManager.PERMISSION_DENIED)
+    }
+
+    private fun requestRequiredPermissions() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.WRITE_CALL_LOG,
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.FOREGROUND_SERVICE
+            ),
+            hashCode()
+        )
+    }
+
+    override fun onRequestPermissions(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == hashCode()) {
+            permissions.forEachIndexed { index, permission ->
+                if (grantResults[index] == PackageManager.PERMISSION_DENIED &&
+                    !(
+                        Build.VERSION.SDK_INT < Build.VERSION_CODES.O &&
+                            permission == Manifest.permission.FOREGROUND_SERVICE
+                        )
+                ) {
+                    showSnackbar(getString(R.string.permissionText, permission))
+                    binding?.serverSwitch?.setOnCheckedChangeListener { _, _ -> }
+                    updateControl(false)
+                    return
+                }
+            }
+            toggleService(true)
+        }
+    }
+
+    private fun showSnackbar(text: String) {
+        binding?.let {
+            Snackbar.make(it.root, text, LENGTH_LONG).show()
         }
     }
 
