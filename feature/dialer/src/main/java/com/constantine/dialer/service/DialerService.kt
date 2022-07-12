@@ -53,7 +53,7 @@ internal class DialerService :
     private val callManager: CallManager = CallManagerImplementation()
 
     private val networkCallback: ConnectivityManager.NetworkCallback by lazy {
-        NetworkCallbackHandler(uri.domain, messenger)
+        NetworkCallbackHandler(uri.domain, clients)
     }
 
     @Inject
@@ -108,7 +108,7 @@ internal class DialerService :
 
     override fun onCallStateChanged(state: Int, number: String) {
         callStateusecase.onChange(state, number)
-        messenger.dispatch(MsgCallStateChange, state)
+        clients.dispatch(MsgCallStateChange, state)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -174,17 +174,17 @@ internal class DialerService :
 
     private class NetworkCallbackHandler constructor(
         private val host: String,
-        private val messenger: Messenger
+        private val clients: MutableList<Messenger>
     ) : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             val address = getIPAddress() ?: host
 
-            messenger.dispatch(Dialer.MsgConnectionChange, address)
+            clients.dispatch(Dialer.MsgConnectionChange, address)
             super.onAvailable(network)
         }
 
         override fun onLost(network: Network) {
-            messenger.dispatch(Dialer.MsgConnectionChange, host)
+            clients.dispatch(Dialer.MsgConnectionChange, host)
             super.onLost(network)
         }
     }

@@ -5,9 +5,7 @@ object Dialer {
     const val MsgRegisterClient = 2
     const val MsgUnRegisterClient = 3
 
-    const val MsgServerConnected = 4
-    const val MsgServerConnecting = 5
-    const val MsgConnectionChange = 6
+    const val MsgConnectionChange = 5
 
-    const val MsgCallStateChange = 7
+    const val MsgCallStateChange = 6
 }

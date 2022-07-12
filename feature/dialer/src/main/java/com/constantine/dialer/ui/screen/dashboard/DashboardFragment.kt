@@ -18,6 +18,7 @@ import android.os.Messenger
 import android.view.View
 import android.widget.Toast.LENGTH_LONG
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -71,7 +72,23 @@ class DashboardFragment :
             is Dashboard.State.OnInitialize -> onInitialized(state.isRunning)
             is Dashboard.State.OnStop -> updateControl(false)
             is Dashboard.State.OnRegister -> updateControl(true)
+            is Dashboard.State.ConnectionChanged -> {
+                val address = "http://${state.address}:${getString(R.integer.port)}"
+                binding?.ipTextView?.text = address
+                binding?.ipTextView?.isVisible = state.address.trim(' ').isNotEmpty()
+                binding?.ipTextView?.setOnClickListener {
+                    launchBrowser(address)
+                }
+            }
         }
+    }
+
+    private fun launchBrowser(uri: String) {
+        startActivity(
+            Intent(Intent.ACTION_VIEW).also {
+                it.data = uri.toUri()
+            }
+        )
     }
 
     private fun onInitialized(isRunning: Boolean) {

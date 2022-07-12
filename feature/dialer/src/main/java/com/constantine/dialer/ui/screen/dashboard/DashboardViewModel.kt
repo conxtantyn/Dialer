@@ -42,8 +42,16 @@ internal class DashboardViewModel @Inject constructor(
 
     override fun handleMessage(message: Message) {
         when (message.what) {
-            Dialer.MsgStopService -> mutableState.value = Dashboard.State.OnStop
+            Dialer.MsgStopService -> {
+                mutableState.value = Dashboard.State.OnStop
+                mutableState.value = Dashboard.State.ConnectionChanged("")
+            }
             Dialer.MsgRegisterClient -> mutableState.value = Dashboard.State.OnRegister
+            Dialer.MsgConnectionChange -> {
+                message.obj?.let {
+                    mutableState.value = Dashboard.State.ConnectionChanged(it.toString())
+                }
+            }
         }
     }
 }

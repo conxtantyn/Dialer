@@ -11,6 +11,7 @@ class Dashboard {
         object OnRegister : State()
 
         data class OnInitialize(val isRunning: Boolean) : State()
+        data class ConnectionChanged(val address: String) : State()
     }
     internal sealed class Event
     internal interface ViewModel {
