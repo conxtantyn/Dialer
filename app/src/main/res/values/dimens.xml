@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="inset">4dip</dimen>
+    <dimen name="radius">8dip</dimen>
+    <dimen name="spacing">16dip</dimen>
+    <dimen name="spacing_small">8dip</dimen>
     <dimen name="splash_loader_width">192dip</dimen>
 </resources>

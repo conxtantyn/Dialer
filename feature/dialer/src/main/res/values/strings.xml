@@ -2,12 +2,16 @@
 <resources>
     <string name="host">http://localhost</string>
 
-    <string name="processing">Processing</string>
-    <string name="connected">Connected</string>
-    <string name="disconnected">Disconnected</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="configuration">Configuration</string>
+    <string name="connection">Connection</string>
+    <string name="address">Address</string>
 
     <string name="channelName">Dialer</string>
     <string name="channelTitle">Dialer service</string>
 
     <string name="permissionText">Please enable %s to proceed</string>
+
+    <string name="viewLogs">View Logs</string>
+    <string name="noConnection">Connection not available</string>
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <layer-list>
+            <item android:bottom="@dimen/inset"
+                android:left="@dimen/inset"
+                android:right="@dimen/inset"
+                android:top="@dimen/inset">
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/radius" />
+                    <solid android:color="@color/overlay_dark_20" />
+                    <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_focused="true">
+        <layer-list>
+            <item android:bottom="@dimen/inset"
+                android:left="@dimen/inset"
+                android:right="@dimen/inset"
+                android:top="@dimen/inset">
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/radius" />
+                    <solid android:color="@color/overlay_dark_30" />
+                    <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_selected="true">
+        <layer-list>
+            <item android:bottom="@dimen/inset"
+                android:left="@dimen/inset"
+                android:right="@dimen/inset"
+                android:top="@dimen/inset">
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/radius" />
+                    <solid android:color="@color/overlay_dark_30" />
+                    <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+
+    <item>
+        <layer-list>
+            <item android:bottom="@dimen/inset"
+                android:left="@dimen/inset"
+                android:right="@dimen/inset"
+                android:top="@dimen/inset">
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/radius" />
+                    <solid android:color="@color/colorButton" />
+                    <padding android:bottom="0dp" android:left="0dp" android:right="0dp" android:top="0dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

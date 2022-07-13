@@ -27,7 +27,6 @@ import com.constantine.dialer.R
 import com.constantine.dialer.databinding.FragmentDashboardBinding
 import com.constantine.dialer.service.Dialer
 import com.constantine.dialer.ui.screen.dashboard.extension.handleAction
-import com.constantine.dialer.ui.screen.dashboard.extension.value
 import com.google.android.material.snackbar.Snackbar
 
 class DashboardFragment :
@@ -50,12 +49,29 @@ class DashboardFragment :
         binding = FragmentDashboardBinding.bind(view)
         receiver = ServiceBroadcastReceiver(this)
 
+        initView()
         initViewModel()
         ServiceBroadcastReceiver.register(requireContext(), receiver!!)
 
         messenger = Messenger(IncomingHandler(viewModel))
 
         viewModel?.initialize()
+    }
+
+    private fun initView() = updateAddress()
+
+    private fun updateAddress(address: String = "") {
+        val uri = "http://$address:${getString(R.integer.port)}"
+        binding?.config?.ipTextView?.text = if (address.isValid()) {
+            uri
+        } else getString(R.string.noConnection)
+        if (!address.isValid()) {
+            binding?.config?.addressLayout?.setOnClickListener {}
+        } else {
+            binding?.config?.addressLayout?.setOnClickListener {
+                launchBrowser(uri)
+            }
+        }
     }
 
     private fun initViewModel() {
@@ -71,14 +87,7 @@ class DashboardFragment :
             is Dashboard.State.OnInitialize -> onInitialized(state.isRunning)
             is Dashboard.State.OnStop -> updateControl(false)
             is Dashboard.State.OnRegister -> updateControl(true)
-            is Dashboard.State.ConnectionChanged -> {
-                val address = "http://${state.address}:${getString(R.integer.port)}"
-                binding?.ipTextView?.text = address
-                binding?.ipTextView?.isVisible = state.address.trim(' ').isNotEmpty()
-                binding?.ipTextView?.setOnClickListener {
-                    launchBrowser(address)
-                }
-            }
+            is Dashboard.State.ConnectionChanged -> updateAddress(state.address)
         }
     }
 
@@ -101,8 +110,7 @@ class DashboardFragment :
     private fun handleViewEvent(event: Dashboard.Event) {}
 
     fun updateControl(enable: Boolean = false) {
-        binding?.serverSwitch?.let {
-            it.value = enable
+        binding?.config?.serverSwitch?.let {
             it.isChecked = enable
             it.setOnCheckedChangeListener { _, state ->
                 handleSwitch(state)
@@ -114,7 +122,6 @@ class DashboardFragment :
         if (!hasRequiredPermissions()) {
             return requestRequiredPermissions()
         }
-        binding?.serverSwitch?.text = getString(R.string.processing)
         toggleService(state)
     }
 
@@ -164,7 +171,7 @@ class DashboardFragment :
                         )
                 ) {
                     showSnackbar(getString(R.string.permissionText, permission))
-                    binding?.serverSwitch?.setOnCheckedChangeListener { _, _ -> }
+                    binding?.config?.serverSwitch?.setOnCheckedChangeListener { _, _ -> }
                     updateControl(false)
                     return
                 }
@@ -214,11 +221,15 @@ class DashboardFragment :
     }
 
     private fun resetComponents() {
+        binding?.config?.serverSwitch?.isVisible = false
+
         binding = null
         receiver = null
         viewModel = null
+    }
 
-        binding?.serverSwitch?.isVisible = false
+    private fun String.isValid(): Boolean {
+        return trim(' ').isNotEmpty()
     }
 
     private fun Messenger.dispatch(what: Int) = handleAction {

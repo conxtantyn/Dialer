@@ -3,11 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/button_dark.xml" value="0.315" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.31567028985507245" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.20108695652173914" />
-        <entry key="feature/dialer/src/main/res/layout/fragment_dashboard.xml" value="0.17135416666666667" />
+        <entry key="feature/dialer/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
         <entry key="feature/dialer/src/main/res/layout/fragment_home.xml" value="0.20108695652173914" />
         <entry key="feature/dialer/src/main/res/layout/fragment_listing.xml" value="0.17135416666666667" />
+        <entry key="feature/dialer/src/main/res/layout/include_config.xml" value="0.33" />
+        <entry key="feature/dialer/src/main/res/layout/include_controller.xml" value="0.38903985507246375" />
       </map>
     </option>
   </component>
