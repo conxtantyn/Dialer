@@ -2,8 +2,9 @@
 <resources>
     <string name="host">http://localhost</string>
 
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard">Call Monitor</string>
     <string name="configuration">Configuration</string>
+    <string name="logs">Call logs</string>
     <string name="connection">Connection</string>
     <string name="address">Address</string>
 
@@ -14,4 +15,7 @@
 
     <string name="viewLogs">View Logs</string>
     <string name="noConnection">Connection not available</string>
+    <string name="noContact">Call log is empty!</string>
+
+    <string name="duration">%s duration</string>
 </resources>

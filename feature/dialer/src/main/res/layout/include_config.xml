@@ -47,7 +47,7 @@
     <View
         android:id="@+id/connectionDivider"
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="1dp"
         android:background="@color/colorSeparator"
         app:layout_constraintTop_toBottomOf="@+id/connectionText" />
 

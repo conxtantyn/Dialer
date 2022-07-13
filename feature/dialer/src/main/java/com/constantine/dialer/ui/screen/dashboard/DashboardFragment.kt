@@ -62,13 +62,13 @@ class DashboardFragment :
 
     private fun updateAddress(address: String = "") {
         val uri = "http://$address:${getString(R.integer.port)}"
-        binding?.config?.ipTextView?.text = if (address.isValid()) {
+        binding?.dashboard?.config?.ipTextView?.text = if (address.isValid()) {
             uri
         } else getString(R.string.noConnection)
         if (!address.isValid()) {
-            binding?.config?.addressLayout?.setOnClickListener {}
+            binding?.dashboard?.config?.addressLayout?.setOnClickListener {}
         } else {
-            binding?.config?.addressLayout?.setOnClickListener {
+            binding?.dashboard?.config?.addressLayout?.setOnClickListener {
                 launchBrowser(uri)
             }
         }
@@ -78,7 +78,6 @@ class DashboardFragment :
         viewModel = ViewModelProvider(this, factory)
             .get(DashboardViewModel::class.java).also {
                 it.state.observe(viewLifecycleOwner, Observer(::handleViewState))
-                it.event.observe(viewLifecycleOwner, Observer(::handleViewEvent))
             }
     }
 
@@ -107,10 +106,8 @@ class DashboardFragment :
         }
     }
 
-    private fun handleViewEvent(event: Dashboard.Event) {}
-
     fun updateControl(enable: Boolean = false) {
-        binding?.config?.serverSwitch?.let {
+        binding?.dashboard?.config?.serverSwitch?.let {
             it.isChecked = enable
             it.setOnCheckedChangeListener { _, state ->
                 handleSwitch(state)
@@ -171,7 +168,7 @@ class DashboardFragment :
                         )
                 ) {
                     showSnackbar(getString(R.string.permissionText, permission))
-                    binding?.config?.serverSwitch?.setOnCheckedChangeListener { _, _ -> }
+                    binding?.dashboard?.config?.serverSwitch?.setOnCheckedChangeListener(null)
                     updateControl(false)
                     return
                 }
@@ -221,7 +218,7 @@ class DashboardFragment :
     }
 
     private fun resetComponents() {
-        binding?.config?.serverSwitch?.isVisible = false
+        binding?.dashboard?.config?.serverSwitch?.isVisible = false
 
         binding = null
         receiver = null
