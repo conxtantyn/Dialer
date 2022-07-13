@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="splash_loader_width">260dip</dimen>
+    <dimen name="splash_loader_width">192dip</dimen>
 </resources>

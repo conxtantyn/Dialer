@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="lottie/splash-loader.zip"
+        app:lottie_fileName="@string/splash_animation_file"
         app:lottie_loop="false"
         app:lottie_speed="0.75"
         app:layout_constraintTop_toTopOf="parent"
