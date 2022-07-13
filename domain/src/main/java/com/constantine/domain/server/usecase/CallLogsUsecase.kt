@@ -8,5 +8,5 @@ import javax.inject.Inject
 class CallLogsUsecase @Inject constructor(
     private val repository: CallRepository
 ) {
-    suspend fun log(timestamp: Long): LiveData<List<ContactLog>> = repository.getLogs(timestamp)
+    suspend fun log(): LiveData<List<ContactLog>> = repository.getLogs()
 }

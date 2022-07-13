@@ -6,16 +6,19 @@ import android.provider.CallLog
 import android.provider.ContactsContract
 import android.telephony.TelephonyManager
 import androidx.lifecycle.LiveData
+import com.constantine.data.repository.ConfigurationRepository
 import com.constantine.data.server.data.dao.CallLogDao
 import com.constantine.data.server.entity.ContactLogEntity
 import com.constantine.domain.parcelable.Contact
 import com.constantine.domain.parcelable.ContactLog
 import com.constantine.domain.server.repository.CallRepository
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class CallMonitorRepository @Inject constructor(
     private val context: Context,
-    private val callLogDao: CallLogDao
+    private val callLogDao: CallLogDao,
+    private val configRepository: ConfigurationRepository
 ) : CallRepository {
 
     private var activeCaller: Contact? = null
@@ -24,7 +27,12 @@ class CallMonitorRepository @Inject constructor(
 
     override fun onStateChanged(state: Int, number: String) {
         when (state) {
-            TelephonyManager.CALL_STATE_IDLE -> activeCaller = null
+            TelephonyManager.CALL_STATE_IDLE -> {
+                activeCaller = null
+                runBlocking {
+                    refreshLog(configRepository.getInstallTimestamp())
+                }
+            }
             TelephonyManager.CALL_STATE_OFFHOOK -> {
                 activeCaller = getContact(number)
             }
@@ -52,13 +60,15 @@ class CallMonitorRepository @Inject constructor(
         return Contact(null, number)
     }
 
-    override suspend fun getLogList(timestamp: Long): List<ContactLog> {
-        refreshLog(timestamp)
+    override suspend fun getLogList(): List<ContactLog> {
+        refreshLog(configRepository.getInstallTimestamp())
+        // load refreshed log from database
         return callLogDao.getList()
     }
 
-    override suspend fun getLogs(timestamp: Long): LiveData<List<ContactLog>> {
-        refreshLog(timestamp)
+    override suspend fun getLogs(): LiveData<List<ContactLog>> {
+        refreshLog(configRepository.getInstallTimestamp())
+        // load refreshed log from database
         return callLogDao.getAll()
     }
 

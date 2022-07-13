@@ -1,4 +1,4 @@
-package com.constantine.dialer.ui.screen.dashboard.listing
+package com.constantine.dialer.ui.screen.listing
 
 import androidx.lifecycle.ViewModel
 import com.constantine.core.content.ViewModelKey

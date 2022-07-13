@@ -3,15 +3,15 @@ package com.constantine.data.server.resource
 import com.constantine.data.config.scope.Endpoint
 import com.constantine.data.content.Resource
 import com.constantine.data.server.model.ErrorModel
+import com.constantine.domain.server.usecase.CallLogListUsecase
 import com.constantine.domain.server.usecase.CallStatusUsecase
-import com.constantine.domain.server.usecase.GetCallLogListUsecase
 import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class ServiceResource @Inject constructor(
-    private val getCallLogListUsecase: GetCallLogListUsecase,
+    private val getCallLogListUsecase: CallLogListUsecase,
     private val callStatusUsecase: CallStatusUsecase
 ) : Resource() {
 

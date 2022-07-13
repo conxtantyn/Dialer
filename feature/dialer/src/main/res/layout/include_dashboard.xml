@@ -42,7 +42,7 @@
             android:id="@+id/listingFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.constantine.dialer.ui.screen.dashboard.listing.ListingFragment"
+            android:name="com.constantine.dialer.ui.screen.listing.ListingFragment"
             app:layout_constraintTop_toBottomOf="@+id/subTitle"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/listingFragment"
-        android:name="com.constantine.dialer.ui.screen.dashboard.listing.ListingFragment"
+        android:name="com.constantine.dialer.ui.screen.listing.ListingFragment"
         android:label="fragment_listing"
         tools:layout="@layout/fragment_listing" />
 </navigation>

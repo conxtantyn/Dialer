@@ -1,4 +1,4 @@
-package com.constantine.dialer.ui.screen.dashboard.listing
+package com.constantine.dialer.ui.screen.listing
 
 import androidx.lifecycle.LiveData
 import com.constantine.domain.parcelable.ContactLog

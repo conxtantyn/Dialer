@@ -9,7 +9,7 @@ interface CallRepository {
 
     fun onStateChanged(state: Int, number: String)
 
-    suspend fun getLogs(timestamp: Long): LiveData<List<ContactLog>>
+    suspend fun getLogs(): LiveData<List<ContactLog>>
 
-    suspend fun getLogList(timestamp: Long): List<ContactLog>
+    suspend fun getLogList(): List<ContactLog>
 }

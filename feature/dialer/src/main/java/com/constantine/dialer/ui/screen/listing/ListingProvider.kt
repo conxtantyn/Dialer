@@ -1,4 +1,4 @@
-package com.constantine.dialer.ui.screen.dashboard.listing
+package com.constantine.dialer.ui.screen.listing
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

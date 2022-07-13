@@ -1,4 +1,4 @@
-package com.constantine.dialer.ui.screen.dashboard.listing
+package com.constantine.dialer.ui.screen.listing
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -7,13 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.constantine.core.component.SingleLiveEvent
 import com.constantine.domain.parcelable.ContactLog
 import com.constantine.domain.server.usecase.CallLogsUsecase
-import com.constantine.domain.usecase.InstallTimestampUsecase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal class ListingViewModel @Inject constructor(
-    private val callLogsUsecase: CallLogsUsecase,
-    private val installTimestampUsecase: InstallTimestampUsecase
+    private val callLogsUsecase: CallLogsUsecase
 ) : ViewModel(), Listing.ViewModel {
     private val mutableState = MediatorLiveData<Listing.State>()
 
@@ -28,7 +26,7 @@ internal class ListingViewModel @Inject constructor(
     fun refreshLog() {
         viewModelScope.launch {
             logSource?.let { mutableState.removeSource(it) }
-            logSource = callLogsUsecase.log(installTimestampUsecase.timestamp()).also {
+            logSource = callLogsUsecase.log().also {
                 mutableState.addSource(it) { logs ->
                     mutableState.value = Listing.State.DisplayListing(logs)
                 }
