@@ -31,6 +31,7 @@ class ListingAdapter @Inject constructor() :
         private var context: Context = binding.root.context
 
         fun bind(log: ContactLog) {
+            binding.root.setOnClickListener { }
             binding.name.text = if (log.name.isNullOrEmpty()) log.number else log.name
             binding.duration.text = context.getString(R.string.duration, log.duration)
         }

@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/spacing"
+    android:background="@color/colorBackgroundDarker"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include android:id="@+id/config"
@@ -39,7 +41,7 @@
         <fragment
             android:id="@+id/listingFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:name="com.constantine.dialer.ui.screen.listing.ListingFragment"
             app:layout_constraintTop_toBottomOf="@+id/subTitle"/>
 

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/colorBackground"
     tools:context=".ui.screen.dashboard.DashboardFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -27,8 +28,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/spacing"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <include android:id="@+id/dashboard"
