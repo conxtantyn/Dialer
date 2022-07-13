@@ -14,7 +14,7 @@
     <string name="permissionText">Please enable %s to proceed</string>
 
     <string name="viewLogs">View Logs</string>
-    <string name="noConnection">Connection not available</string>
+    <string name="noConnection">Connection currently unreachable</string>
     <string name="noContact">No data available!</string>
 
     <string name="duration">%s duration</string>
