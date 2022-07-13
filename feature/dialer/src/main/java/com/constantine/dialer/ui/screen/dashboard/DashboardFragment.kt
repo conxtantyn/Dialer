@@ -209,6 +209,7 @@ class DashboardFragment :
         requireContext().unregisterReceiver(receiver)
         resetMessenger()
         resetComponents()
+
         super.onDestroyView()
     }
 

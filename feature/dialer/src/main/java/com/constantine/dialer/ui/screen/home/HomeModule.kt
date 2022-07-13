@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.constantine.core.config.scope.Scene
 import com.constantine.core.content.ViewModelKey
 import com.constantine.dialer.ui.screen.dashboard.DashboardProvider
-import com.constantine.dialer.ui.screen.listing.ListingProvider
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -12,7 +11,6 @@ import dagger.multibindings.IntoMap
 @Module(
     includes = [
         DashboardProvider::class,
-        ListingProvider::class
     ]
 )
 abstract class HomeModule {

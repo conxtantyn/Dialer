@@ -5,7 +5,7 @@
     android:id="@+id/viewSwitcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screen.listing.ListingFragment">
+    tools:context=".ui.screen.dashboard.listing.ListingFragment">
 
     <FrameLayout
         android:id="@+id/contentLayout"
