@@ -66,7 +66,27 @@ class DialerServiceUnitTest {
         )
         Messenger(binder).dispatch(Dialer.MsgRegisterClient)
 
-        verify(atLeast = 1) { callback.handleMessage(any()) }
+        // registering a client also triggers connection event
+        verify(exactly = 2) { callback.handleMessage(any()) }
+    }
+
+    @Test
+    @Throws(TimeoutException::class)
+    fun testServiceUnbound() {
+        every { serverRepository.disconnect() } answers { }
+
+        val binder = serviceRule.bindService(
+            Intent(
+                ApplicationProvider.getApplicationContext(),
+                DialerService::class.java
+            )
+        )
+        Messenger(binder).dispatch(Dialer.MsgRegisterClient)
+        Messenger(binder).dispatch(Dialer.MsgUnRegisterClient)
+        Messenger(binder).dispatch(Dialer.MsgStopService)
+
+        // registering a client also triggers connection event
+        verify(exactly = 2) { callback.handleMessage(any()) }
     }
 
     private fun Messenger.dispatch(what: Int) {
