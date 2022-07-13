@@ -28,8 +28,6 @@ class ListingFragment : BaseFragment(R.layout.fragment_listing) {
 
         initViewModel()
         initView()
-
-        refreshLog()
     }
 
     private fun refreshLog() {

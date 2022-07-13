@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.constantine.core.component.SingleLiveEvent
+import com.constantine.domain.parcelable.ContactLog
 import com.constantine.domain.server.usecase.CallLogsUsecase
 import com.constantine.domain.usecase.InstallTimestampUsecase
 import kotlinx.coroutines.launch
@@ -18,14 +19,19 @@ internal class ListingViewModel @Inject constructor(
 
     private val mutableEvent = SingleLiveEvent<Listing.Event>()
 
+    private var logSource: LiveData<List<ContactLog>>? = null
+
     override val state: LiveData<Listing.State> get() = mutableState
 
     override val event: LiveData<Listing.Event> get() = mutableEvent
 
     fun refreshLog() {
         viewModelScope.launch {
-            mutableState.addSource(callLogsUsecase.log(installTimestampUsecase.timestamp())) {
-                mutableState.value = Listing.State.DisplayListing(it)
+            logSource?.let { mutableState.removeSource(it) }
+            logSource = callLogsUsecase.log(installTimestampUsecase.timestamp()).also {
+                mutableState.addSource(it) { logs ->
+                    mutableState.value = Listing.State.DisplayListing(logs)
+                }
             }
         }
     }
