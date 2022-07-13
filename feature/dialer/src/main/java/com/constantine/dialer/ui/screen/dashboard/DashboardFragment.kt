@@ -85,7 +85,10 @@ class DashboardFragment :
         when (state) {
             is Dashboard.State.OnInitialize -> onInitialized(state.isRunning)
             is Dashboard.State.OnStop -> updateControl(false)
-            is Dashboard.State.OnRegister -> updateControl(true)
+            is Dashboard.State.OnRegister -> {
+                updateAddress(state.address)
+                updateControl(true)
+            }
             is Dashboard.State.ConnectionChanged -> updateAddress(state.address)
         }
     }

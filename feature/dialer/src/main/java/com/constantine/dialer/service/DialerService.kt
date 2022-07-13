@@ -134,8 +134,7 @@ internal class DialerService :
 
     private fun onRegister(messenger: Messenger) {
         clients.add(messenger)
-        messenger.dispatch(Dialer.MsgRegisterClient)
-        messenger.dispatch(Dialer.MsgConnectionChange, getIPAddress())
+        messenger.dispatch(Dialer.MsgRegisterClient, getIPAddress())
     }
 
     private fun onUnRegister(messenger: Messenger) = clients.remove(messenger)

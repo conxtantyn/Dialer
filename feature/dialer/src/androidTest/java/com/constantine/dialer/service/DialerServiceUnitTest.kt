@@ -66,8 +66,7 @@ class DialerServiceUnitTest {
         )
         Messenger(binder).dispatch(Dialer.MsgRegisterClient)
 
-        // registering a client also triggers connection event
-        verify(exactly = 2) { callback.handleMessage(any()) }
+        verify(exactly = 1) { callback.handleMessage(any()) }
     }
 
     @Test
@@ -87,8 +86,7 @@ class DialerServiceUnitTest {
         // should be ignored since client unregistered already
         Messenger(binder).dispatch(Dialer.MsgStopService)
 
-        // registering a client also triggers connection event
-        verify(exactly = 2) { callback.handleMessage(any()) }
+        verify(exactly = 1) { callback.handleMessage(any()) }
     }
 
     private fun Messenger.dispatch(what: Int) {

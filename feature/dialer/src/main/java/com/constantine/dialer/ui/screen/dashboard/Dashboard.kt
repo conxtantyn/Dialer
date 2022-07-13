@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 class Dashboard {
     internal sealed class State {
         object OnStop : State()
-        object OnRegister : State()
+        data class OnRegister(val address: String) : State()
 
         data class OnInitialize(val isRunning: Boolean) : State()
         data class ConnectionChanged(val address: String) : State()

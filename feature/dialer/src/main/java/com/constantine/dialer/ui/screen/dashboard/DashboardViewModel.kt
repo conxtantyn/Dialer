@@ -46,7 +46,11 @@ internal class DashboardViewModel @Inject constructor(
                 mutableState.value = Dashboard.State.OnStop
                 mutableState.value = Dashboard.State.ConnectionChanged("")
             }
-            Dialer.MsgRegisterClient -> mutableState.value = Dashboard.State.OnRegister
+            Dialer.MsgRegisterClient -> {
+                message.obj?.let {
+                    mutableState.value = Dashboard.State.OnRegister(it.toString())
+                }
+            }
             Dialer.MsgConnectionChange -> {
                 message.obj?.let {
                     mutableState.value = Dashboard.State.ConnectionChanged(it.toString())
