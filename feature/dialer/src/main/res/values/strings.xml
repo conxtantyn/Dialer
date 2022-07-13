@@ -6,7 +6,7 @@
     <string name="configuration">Configuration</string>
     <string name="logs">Call logs</string>
     <string name="connection">Connection</string>
-    <string name="address">Address</string>
+    <string name="address">Network address</string>
 
     <string name="channelName">Dialer</string>
     <string name="channelTitle">Dialer service</string>
