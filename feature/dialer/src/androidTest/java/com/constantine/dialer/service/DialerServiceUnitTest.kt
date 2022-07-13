@@ -83,6 +83,8 @@ class DialerServiceUnitTest {
         )
         Messenger(binder).dispatch(Dialer.MsgRegisterClient)
         Messenger(binder).dispatch(Dialer.MsgUnRegisterClient)
+
+        // should be ignored since client unregistered already
         Messenger(binder).dispatch(Dialer.MsgStopService)
 
         // registering a client also triggers connection event
