@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,7 @@ class ListingFragment : BaseFragment(R.layout.fragment_listing) {
 
     private fun refreshLog() {
         if (hasRequiredPermissions()) {
+            binding?.progressBar?.isVisible = adapter.itemCount == 0
             viewModel?.refreshLog()
         } else {
             displayEmptyView()
@@ -63,8 +65,9 @@ class ListingFragment : BaseFragment(R.layout.fragment_listing) {
                     displayEmptyView()
                 } else {
                     adapter.submit(state.list)
+                    binding?.progressBar?.visibility = View.GONE
                     binding?.viewSwitcher?.let {
-                        binding?.recyclerView?.let { recyclerView ->
+                        binding?.contentLayout?.let { recyclerView ->
                             it.displayedChild = it.indexOfChild(recyclerView)
                         }
                     }
