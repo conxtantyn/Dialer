@@ -1,6 +1,6 @@
 # Call Monitor
 
-This simple android app keeps a log of your calls and can be accessed via a HTTP server. 
+A simple android app that keeps log of your calls and can be accessed via HTTP request within same network. 
 
 ## Root
 
@@ -8,7 +8,7 @@ This simple android app keeps a log of your calls and can be accessed via a HTTP
 
 ###### Response 
 
-`
+```json
 {
     "start": "Jul 13, 2022 19:54:29",
     "services": [
@@ -22,7 +22,7 @@ This simple android app keeps a log of your calls and can be accessed via a HTTP
         }
     ]
 }
-`
+```
 
 ## Status
 
@@ -30,7 +30,9 @@ This simple android app keeps a log of your calls and can be accessed via a HTTP
 
 ###### Response 
 
-`{"name": "John Doe", "number": "+12345678902"}`
+```json
+{"name": "John Doe", "number": "+12345678902"}
+```
 
 ## Logs
 
@@ -38,7 +40,7 @@ This simple android app keeps a log of your calls and can be accessed via a HTTP
 
 ###### Response 
 
-`
+```json
 [
     {
         "date": 1657735473853,
@@ -57,4 +59,4 @@ This simple android app keeps a log of your calls and can be accessed via a HTTP
         "uId": "695"
     }
 ]
-`
+```
