@@ -1,5 +1,7 @@
 package com.constantine.dialer.ui.screen.listing
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -26,7 +28,25 @@ class ListingFragment : BaseFragment(R.layout.fragment_listing) {
         initViewModel()
         initView()
 
-        viewModel?.initialize()
+        refreshLog()
+    }
+
+    private fun refreshLog() {
+        if (hasRequiredPermissions()) {
+            viewModel?.refreshLog()
+        } else {
+            displayEmptyView()
+        }
+    }
+
+    private fun hasRequiredPermissions(): Boolean {
+        return !mutableListOf(
+            requireContext().checkSelfPermission(Manifest.permission.READ_CONTACTS),
+            requireContext().checkSelfPermission(Manifest.permission.READ_PHONE_STATE),
+            requireContext().checkSelfPermission(Manifest.permission.READ_CALL_LOG),
+            requireContext().checkSelfPermission(Manifest.permission.WRITE_CALL_LOG),
+            requireContext().checkSelfPermission(Manifest.permission.WRITE_CONTACTS),
+        ).contains(PackageManager.PERMISSION_DENIED)
     }
 
     private fun initViewModel() {
@@ -66,6 +86,11 @@ class ListingFragment : BaseFragment(R.layout.fragment_listing) {
             it.layoutManager = LinearLayoutManager(requireContext())
             it.adapter = adapter
         }
+    }
+
+    override fun onResume() {
+        refreshLog()
+        super.onResume()
     }
 
     override fun onDestroyView() {

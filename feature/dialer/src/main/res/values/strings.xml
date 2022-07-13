@@ -15,7 +15,7 @@
 
     <string name="viewLogs">View Logs</string>
     <string name="noConnection">Connection not available</string>
-    <string name="noContact">Call log is empty!</string>
+    <string name="noContact">No data available!</string>
 
     <string name="duration">%s duration</string>
 </resources>

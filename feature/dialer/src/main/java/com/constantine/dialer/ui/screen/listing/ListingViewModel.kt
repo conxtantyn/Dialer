@@ -22,7 +22,7 @@ internal class ListingViewModel @Inject constructor(
 
     override val event: LiveData<Listing.Event> get() = mutableEvent
 
-    fun initialize() {
+    fun refreshLog() {
         viewModelScope.launch {
             mutableState.addSource(callLogsUsecase.log(installTimestampUsecase.timestamp())) {
                 mutableState.value = Listing.State.DisplayListing(it)
