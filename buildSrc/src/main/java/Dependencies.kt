@@ -26,6 +26,7 @@ object Dependencies {
         const val Mockk = "1.12.4"
         const val AndroidMockk = "1.12.4"
         const val AndroidxTest = "1.1.3"
+        const val AndroidxTestRules = "1.4.0"
         const val AndroidxEspresso = "3.4.0"
     }
     const val Gson = "com.google.code.gson:gson:${Version.Gson}"
@@ -79,5 +80,6 @@ object Dependencies {
     const val Mockk = "io.mockk:mockk:${Version.Mockk}"
     const val AndroidMockk = "io.mockk:mockk-android:${Version.AndroidMockk}"
     const val AndroidxTest = "androidx.test.ext:junit:${Version.AndroidxTest}"
+    const val AndroidxTestRules = "androidx.test:rules:${Version.AndroidxTestRules}"
     const val AndroidxEspresso = "androidx.test.espresso:espresso-core:${Version.AndroidxEspresso}"
 }

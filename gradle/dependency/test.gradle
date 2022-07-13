@@ -10,5 +10,10 @@ dependencies {
 
     androidTestImplementation(Dependencies.AndroidMockk)
     androidTestImplementation(Dependencies.AndroidxTest)
+    androidTestImplementation(Dependencies.AndroidxTestRules)
     androidTestImplementation(Dependencies.AndroidxEspresso)
+
+    // Dagger test
+    kaptAndroidTest(Dependencies.DaggerCompiler)
+    kaptAndroidTest(Dependencies.DaggerAndroidProcessor)
 }
