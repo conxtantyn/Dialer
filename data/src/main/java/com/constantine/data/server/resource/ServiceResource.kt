@@ -1,8 +1,8 @@
 package com.constantine.data.server.resource
 
-import com.constantine.data.config.scope.Endpoint
-import com.constantine.data.content.Resource
+import com.constantine.data.server.content.Resource
 import com.constantine.data.server.model.ErrorModel
+import com.constantine.data.server.scope.Endpoint
 import com.constantine.domain.server.usecase.CallLogListUsecase
 import com.constantine.domain.server.usecase.CallStatusUsecase
 import com.google.gson.Gson

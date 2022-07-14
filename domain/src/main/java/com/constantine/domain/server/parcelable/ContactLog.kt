@@ -1,4 +1,4 @@
-package com.constantine.domain.parcelable
+package com.constantine.domain.server.parcelable
 
 data class ContactLog(
     val uId: String,

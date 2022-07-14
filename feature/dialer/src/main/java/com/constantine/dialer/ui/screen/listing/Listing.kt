@@ -1,7 +1,7 @@
 package com.constantine.dialer.ui.screen.listing
 
 import androidx.lifecycle.LiveData
-import com.constantine.domain.parcelable.ContactLog
+import com.constantine.domain.server.parcelable.ContactLog
 
 class Listing {
     internal sealed class State {

@@ -1,7 +1,7 @@
-package com.constantine.data.content
+package com.constantine.data.server.content
 
-import com.constantine.data.config.scope.Endpoint
 import com.constantine.data.server.model.ErrorModel
+import com.constantine.data.server.scope.Endpoint
 import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD
 import java.lang.reflect.Method

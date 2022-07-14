@@ -1,6 +1,6 @@
-package com.constantine.data.content
+package com.constantine.data.server.content
 
-import com.constantine.data.config.scope.Endpoint
+import com.constantine.data.server.scope.Endpoint
 import fi.iki.elonen.NanoHTTPD
 import io.mockk.every
 import io.mockk.mockk

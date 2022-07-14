@@ -1,7 +1,7 @@
 package com.constantine.data.server.resource
 
-import com.constantine.data.config.scope.Endpoint
-import com.constantine.data.content.Resource
+import com.constantine.data.server.content.Resource
+import com.constantine.data.server.scope.Endpoint
 import com.constantine.domain.usecase.InstallTimestampUsecase
 import com.google.gson.Gson
 import fi.iki.elonen.NanoHTTPD

@@ -1,8 +1,8 @@
 package com.constantine.data.server.repository
 
 import android.net.Uri
-import com.constantine.data.content.Resource.Companion.notFoundResponse
-import com.constantine.data.util.ResourceUtil
+import com.constantine.data.server.content.Resource.Companion.notFoundResponse
+import com.constantine.data.server.util.ResourceUtil
 import com.constantine.domain.server.exception.ConnectionException
 import com.constantine.domain.server.exception.ConnectionTerminatedException
 import com.constantine.domain.server.exception.ServerException

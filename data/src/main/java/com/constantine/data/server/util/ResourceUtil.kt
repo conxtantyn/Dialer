@@ -1,8 +1,8 @@
-package com.constantine.data.util
+package com.constantine.data.server.util
 
 import android.net.Uri
-import com.constantine.data.content.Resource
-import com.constantine.data.content.Route
+import com.constantine.data.server.content.Resource
+import com.constantine.data.server.content.Route
 import javax.inject.Inject
 
 class ResourceUtil @Inject constructor(

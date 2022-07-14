@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.constantine.dialer.R
 import com.constantine.dialer.databinding.ListingItemContactBinding
-import com.constantine.domain.parcelable.ContactLog
+import com.constantine.domain.server.parcelable.ContactLog
 import javax.inject.Inject
 
 class ListingAdapter @Inject constructor() :

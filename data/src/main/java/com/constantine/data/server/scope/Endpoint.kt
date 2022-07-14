@@ -1,4 +1,4 @@
-package com.constantine.data.config.scope
+package com.constantine.data.server.scope
 
 import fi.iki.elonen.NanoHTTPD
 

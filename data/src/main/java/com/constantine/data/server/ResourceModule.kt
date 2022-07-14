@@ -1,9 +1,9 @@
 package com.constantine.data.server
 
-import com.constantine.data.config.scope.Rest
-import com.constantine.data.content.Resource
+import com.constantine.data.server.content.Resource
 import com.constantine.data.server.resource.MainResource
 import com.constantine.data.server.resource.ServiceResource
+import com.constantine.data.server.scope.Rest
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

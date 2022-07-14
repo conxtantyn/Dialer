@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.constantine.core.component.SingleLiveEvent
-import com.constantine.domain.parcelable.ContactLog
+import com.constantine.domain.server.parcelable.ContactLog
 import com.constantine.domain.server.usecase.CallLogsUsecase
 import kotlinx.coroutines.launch
 import javax.inject.Inject

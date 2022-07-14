@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData
 import com.constantine.data.repository.ConfigurationRepository
 import com.constantine.data.server.data.dao.CallLogDao
 import com.constantine.data.server.entity.ContactLogEntity
-import com.constantine.domain.parcelable.Contact
-import com.constantine.domain.parcelable.ContactLog
+import com.constantine.domain.server.parcelable.Contact
+import com.constantine.domain.server.parcelable.ContactLog
 import com.constantine.domain.server.repository.CallRepository
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject

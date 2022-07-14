@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.constantine.data.server.entity.ContactLogEntity
-import com.constantine.domain.parcelable.ContactLog
+import com.constantine.domain.server.parcelable.ContactLog
 
 @Dao
 interface CallLogDao {

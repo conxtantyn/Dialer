@@ -1,6 +1,6 @@
 package com.constantine.domain.server.usecase
 
-import com.constantine.domain.parcelable.ContactLog
+import com.constantine.domain.server.parcelable.ContactLog
 import com.constantine.domain.server.repository.CallRepository
 import javax.inject.Inject
 
