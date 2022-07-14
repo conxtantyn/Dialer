@@ -30,7 +30,7 @@ class CallMonitorRepository @Inject constructor(
             TelephonyManager.CALL_STATE_IDLE -> {
                 activeCaller = null
                 runBlocking {
-                    refreshLog(configRepository.getInstallTimestamp())
+                    synchLog(configRepository.getInstallTimestamp())
                 }
             }
             TelephonyManager.CALL_STATE_OFFHOOK -> {
@@ -61,18 +61,18 @@ class CallMonitorRepository @Inject constructor(
     }
 
     override suspend fun getLogList(): List<ContactLog> {
-        refreshLog(configRepository.getInstallTimestamp())
+        synchLog(configRepository.getInstallTimestamp())
         // load refreshed log from database
         return callLogDao.getList()
     }
 
     override suspend fun getLogs(): LiveData<List<ContactLog>> {
-        refreshLog(configRepository.getInstallTimestamp())
+        synchLog(configRepository.getInstallTimestamp())
         // load refreshed log from database
         return callLogDao.getAll()
     }
 
-    private suspend fun refreshLog(timestamp: Long) {
+    private suspend fun synchLog(timestamp: Long) {
         val logs = mutableListOf<ContactLogEntity>()
         val selection = "${CallLog.Calls.DATE} >= ?"
         val selectionArgs = arrayOf(timestamp.toString())
