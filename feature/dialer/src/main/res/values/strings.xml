@@ -12,6 +12,7 @@
     <string name="channelTitle">Dialer service</string>
 
     <string name="permissionText">Please enable %s to proceed</string>
+    <string name="callLogPermissionText">Please enable required permission to view call logs</string>
 
     <string name="viewLogs">View Logs</string>
     <string name="noConnection">Connection currently unreachable</string>

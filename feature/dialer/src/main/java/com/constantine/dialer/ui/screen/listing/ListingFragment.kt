@@ -16,6 +16,7 @@ import com.constantine.dialer.listener.CallManager
 import com.constantine.dialer.listener.implementation.CallManagerImplementation
 import com.constantine.dialer.ui.screen.dashboard.Dashboard
 import com.constantine.dialer.ui.screen.dashboard.DashboardViewModel
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class ListingFragment : BaseFragment(R.layout.fragment_listing), CallManager.CallListener {
@@ -47,6 +48,13 @@ class ListingFragment : BaseFragment(R.layout.fragment_listing), CallManager.Cal
             viewModel?.refreshLog()
         } else {
             displayEmptyView()
+            binding?.let {
+                Snackbar.make(
+                    it.root,
+                    getString(R.string.callLogPermissionText),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

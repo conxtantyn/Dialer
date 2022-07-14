@@ -39,12 +39,9 @@ object Dependencies {
     // android
     const val AndroidxCore = "androidx.core:core-ktx:${Version.AndroidxCore}"
     const val AndroidxAppCompact = "androidx.appcompat:appcompat:${Version.AndroidxAppCompact}"
-    const val AndroidxConstraintLayout = "androidx.constraintlayout" +
-            ":constraintlayout:${Version.AndroidxConstraintLayout}"
-    const val AndroidGoogleMaterial = "com.google.android.material" +
-            ":material:${Version.AndroidGoogleMaterial}"
-    const val AndroidxLegacySupport = "androidx.legacy:legacy-support-v4" +
-            ":${Version.AndroidxLegacySupport}"
+    const val AndroidxConstraintLayout = "androidx.constraintlayout:constraintlayout:${Version.AndroidxConstraintLayout}"
+    const val AndroidGoogleMaterial = "com.google.android.material:material:${Version.AndroidGoogleMaterial}"
+    const val AndroidxLegacySupport = "androidx.legacy:legacy-support-v4:${Version.AndroidxLegacySupport}"
 
     // room
     const val Room = "androidx.room:room-ktx:${Version.Room}"
@@ -53,21 +50,16 @@ object Dependencies {
 
     // navigation
     const val NavigationUI = "androidx.navigation:navigation-ui-ktx:${Version.Navigation}"
-    const val NavigationDynamicFeature = "androidx.navigation" +
-            ":navigation-dynamic-features-fragment:${Version.Navigation}"
-    const val NavigationFragment = "androidx.navigation:navigation-fragment-ktx" +
-            ":${Version.Navigation}"
+    const val NavigationDynamicFeature = "androidx.navigation:navigation-dynamic-features-fragment:${Version.Navigation}"
+    const val NavigationFragment = "androidx.navigation:navigation-fragment-ktx:${Version.Navigation}"
 
     // dagger
     const val Dagger = "com.google.dagger:dagger:${Version.Dagger}"
     const val DaggerAndroid = "com.google.dagger:dagger-android-support:${Version.Dagger}"
     const val DaggerCompiler = "com.google.dagger:dagger-compiler:${Version.Dagger}"
-    const val DaggerAndroidProcessor = "com.google.dagger" +
-            ":dagger-android-processor:${Version.Dagger}"
-    const val DaggerAssistedAnnotations = "com.squareup.inject" +
-            ":assisted-inject-annotations-dagger2:${Version.DaggerAssisted}"
-    const val DaggerAssistedProcessor = "com.squareup.inject" +
-            ":assisted-inject-processor-dagger2:${Version.DaggerAssisted}"
+    const val DaggerAndroidProcessor = "com.google.dagger:dagger-android-processor:${Version.Dagger}"
+    const val DaggerAssistedAnnotations = "com.squareup.inject:assisted-inject-annotations-dagger2:${Version.DaggerAssisted}"
+    const val DaggerAssistedProcessor = "com.squareup.inject:assisted-inject-processor-dagger2:${Version.DaggerAssisted}"
 
     // lottie
     const val Lottie = "com.airbnb.android:lottie:${Version.Lottie}"
